@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.system.sysdp.model.SysDpVO" table="SYS_DP">
+<id name="dpId" column="DP_ID" type="java.lang.String">
+<generator class="assigned"/>
+</id>
+<property name="dpName" column="DP_NAME" type="java.lang.String" length="50"/>
+<property name="parentDpId" column="PARENT_DP_ID" type="java.lang.String" length="50"/>
+<property name="dpFullName" column="DP_FULL_NAME" type="java.lang.String" length="400"/>
+<property name="dpCode" column="DP_CODE" type="java.lang.String" length="100"/>
+<property name="isTmpDp" column="IS_TMP_DP" type="java.lang.String" length="50"/>
+<property name="orderNo" column="ORDER_NO" type="java.lang.String" length="50"/>
+</class>
+</hibernate-mapping>
+

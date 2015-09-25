@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.system.menumonitorconfig.model.MenuMonitorConfigVO" table="SYS_MENU_MONITOR_CONFIG">
+<id name="monitorId" column="MONITOR_ID" type="java.lang.Long">
+<generator class="assigned"/>
+</id>
+<property name="monitorUrl" column="MONITOR_URL" type="java.lang.String" length="200"/>
+<property name="monitorName" column="MONITOR_NAME" type="java.lang.String" length="200"/>
+<property name="memo" column="MEMO" type="java.lang.String" length="200"/>
+</class>
+</hibernate-mapping>
+

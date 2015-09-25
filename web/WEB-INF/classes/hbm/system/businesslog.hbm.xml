@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.system.businesslog.model.BusinessLogVO" table="SYS_BUSINESS_LOG">
+<id name="logId" column="LOG_ID" type="java.lang.Long">
+<generator class="assigned"/>
+</id>
+<property name="oprCode" column="OPR_CODE" type="java.lang.String" length="50"/>
+<property name="oprTime" column="OPR_TIME" type="java.util.Date" length="7"/>
+<property name="oprType" column="OPR_TYPE" type="java.lang.String" length="4"/>
+<property name="busiName" column="BUSI_NAME" type="java.lang.String" length="60"/>
+<property name="busiValue" column="BUSI_VALUE" type="java.lang.String"/>
+</class>
+</hibernate-mapping>
+

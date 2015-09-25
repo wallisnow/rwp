@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<models>
+	<!-- 用户角色关系批量导入 -->
+	<model id="com.congxing.system.userofrole.model.UserOfRoleVO">
+		<property name="userId" dataType="String" titleName="用户登录号" columnIndex="1" nullAble="false"/>
+		<property name="roleId" dataType="String" titleName="角色名称" columnIndex="2" nullAble="false" transType="CODE2NAME" format="!com.congxing.system.role.model.RoleVO*roleName*roleId"/>
+		<property name="beginTime" dataType="date" titleName="开始日期" columnIndex="3" nullAble="false" transType="DATE" format="yyyyMMdd"/>
+		<property name="endTime" dataType="date" titleName="结束日期" columnIndex="4" nullAble="false" transType="DATE" format="yyyyMMdd"/>
+	</model>
+	
+	<!-- 用户批量导入 -->
+	<model id="com.congxing.system.user.model.UserVO">
+		<property name="userId" dataType="String" titleName="用户登录号" columnIndex="1" nullAble="false"/>
+		<property name="userName" dataType="String" titleName="用户名称" columnIndex="2" nullAble="false"/>
+		<property name="password" dataType="String" titleName="用户登录密码" columnIndex="3" nullAble="false"/>
+		<property name="mobileno" dataType="String" titleName="用户手机号码" columnIndex="4" nullAble="false"/>
+		<property name="email" dataType="String" titleName="用户邮箱" columnIndex="5" nullAble="true"/>
+		<property name="dpId" dataType="String" titleName="组织架构ID" columnIndex="6" nullAble="false"/>
+	</model>
+	
+	<model id="com.congxing.report.commentsinfo.model.CommentsInfoVO">
+		<property name="cjType" dataType="String" titleName="酬金类型" columnIndex="1" nullAble="false"/>
+		<property name="comments" dataType="String" titleName="备注" columnIndex="2" nullAble="false"/>
+	</model>
+	
+</models>

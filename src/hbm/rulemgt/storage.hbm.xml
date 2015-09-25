@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.rulemgt.storage.model.StorageVO" table="RULE_STORAGE">
+<id name="storageId" column="STORAGE_ID" type="java.lang.Long">
+<generator class="assigned"/>
+</id>
+<property name="rulesetId" column="RULESET_ID" type="java.lang.Long" length="18"/>
+<property name="rulesetVersion" column="RULESET_VERSION" type="java.lang.String" length="12"/>
+<property name="storageName" column="STORAGE_NAME" type="java.lang.String" length="100"/>
+<property name="storageDesc" column="STORAGE_DESC" type="java.lang.String" length="1000"/>
+<property name="dbId" column="DB_ID" type="java.lang.Long" length="18"/>
+<property name="tableName" column="TABLE_NAME" type="java.lang.String" length="100"/>
+<property name="subCode" column="SUB_CODE" type="java.lang.String" length="20"/>
+<property name="subDate" column="SUB_DATE" type="java.util.Date" />
+</class>
+</hibernate-mapping>
+

@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+
+<project name="WebServicesSamples" default="createClient" basedir=".">
+
+	<property file="${basedir}/build.properties" />
+	
+	<path id="axis.classpath">
+		<fileset dir="${axis.home}/lib">
+			<include name="axis.jar" />
+			<include name="axis-ant.jar" />
+			<include name="commons-discovery-0.2.jar" />
+			<include name="commons-logging-1.0.4.jar" />
+			<include name="jaxrpc.jar" />
+			<include name="log4j-1.2.8.jar" />
+			<include name="saaj.jar" />
+			<include name="wsdl4j-1.5.1.jar" />
+		</fileset>
+	</path>
+
+	<path id="xfire.classpath">
+		<fileset dir="${xfire.home}/lib">
+			<include name="xfire-all-1.2.6.jar" />
+			<include name="jaxb-api-2.0.jar" />
+			<include name="stax-api-1.0.1.jar" />
+			<include name="jdom-1.0.jar" />
+			<include name="jaxb-impl-2.0.1.jar" />
+			<include name="jaxb-xjc-2.0.1.jar" />
+			<include name="wstx-asl-3.2.0.jar" />
+			<include name="commons-logging-1.0.4.jar" />
+			<include name="activation-1.1.jar" />
+			<include name="wsdl4j-1.6.1.jar" />
+			<include name="XmlSchema-1.1.jar" />
+			<include name="xfire-jsr181-api-1.0-M1.jar" />
+			<include name="xbean-2.2.0.jar" />
+		</fileset>
+	</path>
+
+	<path id="ws.classpath">
+		<fileset dir="${websphere.home}/lib">
+			<include name="ant.jar" />
+			<include name="xerces.jar" />
+			<include name="j2ee.jar" />
+			<include name="pagelist.jar" />
+			<include name="xml-apis.jar" />
+			<include name="cmm.jar" />
+			<include name="i18nctx.jar" />
+			<include name="flow.jar" />
+			<include name="brbClient.jar" />
+			<include name="distexcep.jar" />
+			<include name="activitySession.jar" />
+			<include name="acwa.jar" />
+			<include name="j2ee.jar" />
+			<include name="webservices.jar" />
+			<include name="qname.jar" />
+			<include name="commons-discover.jar" />
+			<include name="wsanttasks.jar" />
+		</fileset>
+	</path>
+
+	<path id="class.path">
+		<fileset dir="${lib.dir}/commons">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${lib.dir}/concurrent">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${lib.dir}/ctg">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${lib.dir}/hibernate">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${lib.dir}/informix">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${lib.dir}/jox">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${lib.dir}/jxl">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${lib.dir}/others">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="${lib.dir}/safeword">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${lib.dir}/WebSphere">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<target name="all" depends="clean, init, compile, makeAddressBookJ2WBwar" />
+
+
+	<target name="clean">
+		<tstamp />
+		<echo message="WebServices Bean Cleaning..." />
+		<delete dir="testWS" />
+	</target>
+
+	<target name="init">
+		<tstamp />
+		<echo message="WebServices Build Started..." />
+		<mkdir dir="testWS/pre-bld" />
+		<mkdir dir="testWS/src" />
+		<mkdir dir="testWS/WebModule/WEB-INF/wsdl" />
+		<mkdir dir="testWS/WebModule/WEB-INF/classes" />
+		<mkdir dir="testWS/develop-server" />
+		<mkdir dir="testWS/deploy-server" />
+		<mkdir dir="testWS/develop-client" />
+		<mkdir dir="testWS/deploy-client" />
+		<mkdir dir="testWS/server" />
+		<mkdir dir="testWS/client" />
+		<taskdef name="Java2WSDLTask" classname="com.ibm.websphere.ant.tasks.Java2WSDL" classpath="${websphere.home}/lib/wsanttasks.jar;${websphere.home}/lib/websrvices.jar">
+			<classpath>
+				<pathelement path="${basedir}/testWS/pre-bld" />
+				<!-- 用于生成wsdl时的所指定类所在类包或者目录位置 -->
+			</classpath>
+		</taskdef>
+		<taskdef name="WSDL2JavaTask" classname="com.ibm.websphere.ant.tasks.WSDL2Java" classpath="${websphere.home}/lib/wsanttasks.jar">
+		</taskdef>
+	</target>
+
+	<target name="compile" depends="init">
+		<!-- 假如提供的是源程序，需要先编译得到class文件，再生成wsdl；若是jar文件，跳过这一步 -->
+		<tstamp />
+		<echo message="WebServices pre-Source Compiling..." />
+		<javac srcdir="./../testsf/src" destdir="testWS/pre-bld" deprecation="true" debug="on" classpath="${class.path}" includes="test/Hello.java">
+		</javac>
+	</target>
+
+	<target name="emitWSDL" depends="compile">
+		<tstamp />
+		<echo message="WebServices Bean Emiting WSDL file..." />
+		<Java2WSDLTask output="${basedir}/testWS/WebModule/WEB-INF/wsdl/Hello.wsdl" className="test.Hello" implClass="test.Hello" namespace="http://test" location="http://localhost:9080/test/services/Hello" style="document" use="literal">
+			<mapping namespace="http://test" package="test" />
+		</Java2WSDLTask>
+	</target>
+
+	<!-- Deployment Descriptors must already be created.  See WSDL2Java. -->
+
+	<target name="emit" depends="emitWSDL">
+		<tstamp />
+
+		<echo message="WebServicesSamples Bean Emiting development files..." />
+		<!-- 首先调用一次wsdl2java生成相关xml -->
+		<WSDL2JavaTask url="${basedir}/testWS/WebModule/WEB-INF/wsdl/Hello.wsdl" output="${basedir}/testWS/WebModule" role="develop-server" container="web" genjava="no" verbose="true">
+		</WSDL2JavaTask>
+
+		<!-- Fill in the servlet-name of the servlet-link attribute in the generated webservices.xml -->
+		<replace file="${basedir}/testWS/WebModule/WEB-INF/webservices.xml" token="??SET THIS TO servlet-name ELEMENT OF web.xml??" value="test_Hello">
+		</replace>
+
+		<echo message="WebServicesSamples Bean Emiting deployment files..." />
+		<WSDL2JavaTask url="${basedir}/testWS/WebModule/WEB-INF/wsdl/Hello.wsdl" output="${basedir}/testWS/src" role="develop-server" container="web" genjava="overwrite" genxml="no" verbose="true">
+		</WSDL2JavaTask>
+
+		<!-- Compile a 2nd time to get the serializers -->
+		<javac srcdir="testWS/src" destdir="testWS/WebModule/WEB-INF/classes" deprecation="true" debug="on" classpath="${ws.classpath}" />
+
+		<WSDL2JavaTask url="${basedir}/testWS/WebModule/WEB-INF/wsdl/Hello.wsdl" output="${basedir}/testWS/develop-server" role="develop-server" container="bean" verbose="true">
+		</WSDL2JavaTask>
+		<WSDL2JavaTask url="${basedir}/testWS/WebModule/WEB-INF/wsdl/Hello.wsdl" output="${basedir}/testWS/deploy-server" role="deploy-server" container="bean" genjava="overwrite" genxml="overwrite" verbose="true">
+		</WSDL2JavaTask>
+		<WSDL2JavaTask url="${basedir}/testWS/WebModule/WEB-INF/wsdl/Hello.wsdl" output="${basedir}/testWS/server" role="server" container="bean" verbose="true">
+		</WSDL2JavaTask>
+		<WSDL2JavaTask url="${basedir}/testWS/WebModule/WEB-INF/wsdl/Hello.wsdl" output="${basedir}/testWS/develop-client" role="develop-client" verbose="true">
+		</WSDL2JavaTask>
+		<WSDL2JavaTask url="${basedir}/testWS/WebModule/WEB-INF/wsdl/Hello.wsdl" output="${basedir}/testWS/deploy-client" role="deploy-client" verbose="true">
+		</WSDL2JavaTask>
+		<WSDL2JavaTask url="${basedir}/testWS/WebModule/WEB-INF/wsdl/Hello.wsdl" output="${basedir}/testWS/client" role="client" verbose="true">
+		</WSDL2JavaTask>
+
+	</target>
+
+	<target name="makeAddressBookJ2WBwar" depends="emit">
+		<tstamp />
+		<echo message="Creating the WebServices war..." />
+		<copy todir="testWS/WebModule/WEB-INF/classes">
+			<fileset dir="testWS/src" includes="test/**/*.java" />
+		</copy>
+		<jar jarfile="testWS/Hello.war">
+			<zipfileset dir="testWS/WebModule/WEB-INF" />
+		</jar>
+	</target>
+
+	<target name="axis-init">
+		<tstamp />
+		<echo message="WebServices Build Started..." />
+		<taskdef name="AxisJava2WSDLTask" classname="org.apache.axis.tools.ant.wsdl.Java2WsdlAntTask" classpath="${axis.home}/lib/wsdl4j-1.5.1.jar;${axis.home}/lib/saaj.jar;${axis.home}/lib/log4j-1.2.8.jar;${axis.home}/lib/jaxrpc.jar;${axis.home}/lib/commons-logging-1.0.4.jar;${axis.home}/lib/commons-discovery-0.2.jar;${axis.home}/lib/axis.jar;${axis.home}/lib/axis-ant.jar">
+			<classpath>
+				<pathelement path="${basedir}/testWS/pre-bld" />
+				<!-- 用于生成wsdl时的所指定类所在类包或者目录位置 -->
+			</classpath>
+		</taskdef>
+		<taskdef name="AxisWSDL2JavaTask" classname="org.apache.axis.tools.ant.wsdl.Wsdl2javaAntTask" classpath="${axis.home}/lib/wsdl4j-1.5.1.jar;${axis.home}/lib/saaj.jar;${axis.home}/lib/log4j-1.2.8.jar;${axis.home}/lib/jaxrpc.jar;${axis.home}/lib/commons-logging-1.0.4.jar;${axis.home}/lib/commons-discovery-0.2.jar;${axis.home}/lib/axis.jar;${axis.home}/lib/axis-ant.jar">
+		</taskdef>
+	</target>
+	
+	<target name="createHost" depends="compile,axis-init">
+		<AxisJava2WSDLTask output="${basedir}/axisTest/Hello.wsdl" 
+			className="test.Hello" implClass="test.Hello" namespace="http://test" 
+				location="http://localhost:9080/test/services/Hello" style="document" 
+				use="literal">
+		</AxisJava2WSDLTask>
+	</target>
+	
+	<target name="createAxisServer" depends="axis-init">
+		<AxisWSDL2JavaTask url="${basedir}/SmsSender/SmsSender.wsdl" 
+			output="${basedir}/SmsSender/client" verbose="true">
+		</AxisWSDL2JavaTask>
+	<AxisWSDL2JavaTask url="${basedir}/SmsSender/SmsSender.wsdl" serverside="true"
+		output="${basedir}/SmsSender/server" verbose="true">
+	</AxisWSDL2JavaTask>
+	</target>
+
+	<!-- 想用axis做客户端的话就用这个定义，一般用这个 -->
+	<target name="createClient" depends="axis-init">
+		<AxisWSDL2JavaTask url="D:/Service.wsdl" output="D:\temp" verbose="true">
+		</AxisWSDL2JavaTask>
+	</target>
+	
+	<target name="xfire-init">
+		<tstamp />
+		<echo message="WebServices Build Started..." />
+		<taskdef name="XfireWSDL2JavaTask" classname="org.codehaus.xfire.gen.WsGenTask" classpathref="xfire.classpath">
+		</taskdef>
+	</target>
+
+	<!-- 想用xfire做客户端的话就用这个定义，很麻烦，弃之 -->
+	<target name="createXfireClient" depends="xfire-init">
+		<!--XfireWSDL2JavaTask outputDirectory="${basedir}/ISZT/xfire" 
+			wsdl="http://183.16.50.33:7020/SZTCNMI/services/ISZTServices?wsdl" 
+			package="com.maywide.bizcharge.ws.angel.jaxb" overwrite="true" 
+			binding="jaxb"	/-->
+		<!--XfireWSDL2JavaTask outputDirectory="${basedir}/AirCharge" 
+					wsdl="E:/workspace/SZCHANNEL_JBoss/WebModule/WEB-INF/wsdl/AirChargeService.wsdl" 
+					package="" overwrite="true" 
+					binding="jaxb"	/-->
+		<XfireWSDL2JavaTask outputDirectory="${basedir}/StarFire" 
+					wsdl="E:/workspace/SZCHANNEL_JBoss/WebModule/WEB-INF/wsdl/StarFire.wsdl" 
+					package="" overwrite="true" 
+					binding="jaxb"	/>
+	</target>
+
+</project>

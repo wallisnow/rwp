@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.system.menumonitordet.model.MenuMonitorDetVO" table="SYS_MENU_MONITOR_DET">
+<id name="seqId" column="SEQ_ID" type="java.lang.Long">
+<generator class="assigned"/>
+</id>
+<property name="userId" column="USER_ID" type="java.lang.String" length="50"/>
+<property name="userIp" column="USER_IP" type="java.lang.String" length="50"/>
+<property name="monitorId" column="MONITOR_ID" type="java.lang.Long" length="18"/>
+<property name="oprParams" column="OPR_PARAMS" type="java.lang.String" length="800"/>
+<property name="beginTime" column="BEGIN_TIME" type="java.util.Date" />
+<property name="endTime" column="END_TIME" type="java.util.Date" />
+</class>
+</hibernate-mapping>
+

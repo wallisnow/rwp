@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.system.menuvisitdet.model.MenuVisitDetVO" table="SYS_MENU_VISIT_DET">
+<id name="seqId" column="SEQ_ID" type="java.lang.Long">
+<generator class="assigned"/>
+</id>
+<property name="userId" column="USER_ID" type="java.lang.String" length="20"/>
+<property name="userIp" column="USER_IP" type="java.lang.String" length="50"/>
+<property name="menuId" column="MENU_ID" type="java.lang.String" length="50"/>
+<property name="visitTime" column="VISIT_TIME" type="java.util.Date" />
+</class>
+</hibernate-mapping>
+

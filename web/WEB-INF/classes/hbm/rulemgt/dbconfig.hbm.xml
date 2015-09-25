@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.rulemgt.dbconfig.model.DbConfigVO" table="RULE_DB_CONFIG">
+<id name="dbId" column="DB_ID" type="java.lang.Long">
+<generator class="assigned"/>
+</id>
+<property name="dbName" column="DB_NAME" type="java.lang.String" length="20"/>
+<property name="driverClass" column="DRIVER_CLASS" type="java.lang.String" length="100"/>
+<property name="jdbcUrl" column="JDBC_URL" type="java.lang.String" length="200"/>
+<property name="user" column="USER" type="java.lang.String" length="20"/>
+<property name="password" column="PASSWORD" type="java.lang.String" length="20"/>
+<property name="dbDesc" column="DB_DESC" type="java.lang.String" length="200"/>
+</class>
+</hibernate-mapping>
+

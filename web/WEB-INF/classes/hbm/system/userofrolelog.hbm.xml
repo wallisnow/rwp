@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.system.userofrole.model.UserOfRoleLogVO" table="SYS_USER_OF_ROLE_LOG">
+<id name="logId" column="LOG_ID" type="java.lang.Long">
+<generator class="assigned"/>
+</id>
+<property name="oprCode" column="OPR_CODE" type="java.lang.String" length="50"/>
+<property name="oprTime" column="OPR_TIME" type="java.util.Date" />
+<property name="oprType" column="OPR_TYPE" type="java.lang.String" length="4"/>
+<property name="urId" column="UR_ID" type="java.lang.Long" length="18"/>
+<property name="userId" column="USER_ID" type="java.lang.String" length="20"/>
+<property name="roleId" column="ROLE_ID" type="java.lang.String" length="20"/>
+<property name="status" column="STATUS" type="java.lang.String" length="4"/>
+<property name="beginTime" column="BEGIN_TIME" type="java.util.Date" />
+<property name="endTime" column="END_TIME" type="java.util.Date" />
+</class>
+</hibernate-mapping>
+

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.rulemgt.ruleset.model.RulesetVO" table="RULESET">
+<composite-id>
+<key-property name="rulesetId" column="RULESET_ID" type="java.lang.Long"/>
+<key-property name="rulesetVersion" column="RULESET_VERSION" type="java.lang.String" length="12"/>
+</composite-id>
+<property name="rulesetName" column="RULESET_NAME" type="java.lang.String" length="100"/>
+<property name="rulesetDesc" column="RULESET_DESC" type="java.lang.String"/>
+<property name="status" column="STATUS" type="java.lang.String" length="12"/>
+<property name="versionDesc" column="VERSION_DESC" type="java.lang.String" length="1000"/>
+<property name="creator" column="CREATOR" type="java.lang.String" length="50"/>
+<property name="createTime" column="CREATE_TIME" type="java.util.Date" />
+<property name="rulesetType" column="RULESET_TYPE" type="java.lang.String" length="50"/>
+</class>
+</hibernate-mapping>
+

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+
+	<package name="system" namespace="/system" extends="json-default">
+		<action name="login" class="com.congxing.system.index.LoginAction" method="execute">
+			<result name="success" type="redirectAction">index</result>
+			<result name="error">/login.jsp</result>
+		</action>
+		<action name="loginout" class="com.congxing.system.index.LoginOutAction" method="execute">
+			<result>/login.jsp</result>
+		</action>
+		<action name="index" class="com.congxing.system.index.IndexAction" method="execute">
+			<result name="success">/index.jsp</result>
+			<result name="error">/index.jsp</result>
+		</action>
+	</package>
+	
+	<package name="systemRole" namespace="/system/role" extends="struts-default">
+		<action name="showroleofmenu" class="com.congxing.system.role.view.RoleAction" method="showroleofmenu">
+			<result name="success">/system/role/rmtree.jsp</result>
+			<result name="error">/system/role/rmtree.jsp</result>
+		</action>
+		<action name="saveroleofmenu" class="com.congxing.system.role.view.RoleAction" method="saveroleofmenu">
+			<result name="success">/system/role/rmtree.jsp</result>
+			<result name="error">/system/role/rmtree.jsp</result>
+		</action>
+	</package>
+	
+	<package name="userofrole" namespace="/system/userofrole" extends="struts-default">
+		<action name="upload" class="com.congxing.core.web.struts2.UploadFileAction">
+			<result name="success">/system/userofrole/batch.jsp</result>
+			<result name="input">/system/userofrole/batch.jsp</result>
+		</action>
+	</package>
+	
+	<package name="user" namespace="/system/user" extends="json-default">
+		<action name="upload" class="com.congxing.core.web.struts2.UploadFileAction">
+			<result name="success">/system/user/batch.jsp</result>
+			<result name="input">/system/user/batch.jsp</result>
+		</action>
+	</package>
+	
+	<package name="uploadFile" namespace="/system/download" extends="json-default">
+		<action name="attach" class="com.congxing.system.upload.view.UploadAction" method="attach">
+			<result name="success">/system/upload/attach.jsp</result>
+		</action>
+		<action name="uploadFile" class="com.congxing.system.upload.view.UploadAction" method="uploadFile">
+			<result name="success">/system/upload/attach.jsp</result>
+		</action>
+		<action name="progressJson" class="com.congxing.system.upload.view.UploadAction" method="progressJson">
+			<result type="json" />
+		</action>
+	</package>
+	
+	
+	<package name="downFile" namespace="/system/download" extends="json-default">
+		<action name="downFileByAttachId" class="com.congxing.system.download.view.DownloadAction" method="downFileByAttachId">
+			<result name="success" type="stream">
+				<param name="contentDisposition">attachment;filename=${fileName}</param>
+				<param name="inputName">inputStream</param>
+				<param name="bufferSize">4096</param>			
+			</result>
+			<result name="error">/common/404.jsp</result>
+		</action>
+		<action name="downFileByFullFilePath" class="com.congxing.system.download.view.DownloadAction" method="downFileByFullFilePath">
+			<result name="success" type="stream">
+				<param name="contentDisposition">attachment;filename=${fileName}</param>
+				<param name="inputName">inputStream</param>
+				<param name="bufferSize">4096</param>			
+			</result>
+			<result name="error">/common/404.jsp</result>
+		</action>
+	</package>
+
+</struts>

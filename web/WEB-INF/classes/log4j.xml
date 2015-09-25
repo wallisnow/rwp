@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<!-- console log -->
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH\:mm\:ss} [%c{1} %p] - %m %n" />
+		</layout>
+	</appender>
+
+	<!-- file log -->
+	<appender name="FILE" class="org.apache.log4j.FileAppender">
+		<param name="File" value="C:/logs/file.log" />
+		<param name="Append" value="true" />
+		<param name="Encoding" value="UTF-8" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH\:mm\:ss} [%c{1} %p] - %m %n" />
+		</layout>
+	</appender>
+	
+	<!-- webservicehttp log -->
+	<appender name="WSHTTPLOG" class="org.apache.log4j.FileAppender">
+		<param name="File" value="C:/logs/wshttp.log" />
+		<param name="Append" value="true" />
+		<param name="Encoding" value="UTF-8" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH\:mm\:ss} [%c{1} %p] - %m %n" />
+		</layout>
+	</appender>
+
+	<!-- menu access log -->
+	<appender name="MENU_ACCESS" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="C:/logs/menuaccess.log" />
+		<param name="Append" value="true" />
+		<param name="Encoding" value="UTF-8" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p %m%n" />
+		</layout>
+	</appender>
+	<!-- quartz log -->
+	<appender name="QUARTZ" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="C:/logs/quartz.log" />
+		<param name="Append" value="true" />
+		<param name="Encoding" value="UTF-8" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p %m%n" />
+		</layout>
+	</appender>
+	
+	<category name="com.congxing.core.web.filter.MenuAccessMonitor">
+		<priority value="INFO" />
+		<appender-ref ref="MENU_ACCESS" />
+	</category>
+	
+	<category name="webservicehttplog">
+		<priority value="INFO" />
+		<appender-ref ref="WSHTTPLOG" />
+	</category>
+	
+	<category name="com.congxing.schedule">
+		<priority value="INFO" />
+		<appender-ref ref="QUARTZ" />
+	</category>
+	
+	<root>
+		<priority value="INFO" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
+	</root>
+
+</log4j:configuration>

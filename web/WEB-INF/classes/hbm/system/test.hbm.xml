@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.congxing.system.test.model.TestVO" table="test">
+		<id name="testId" column="test_id" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
+		<property name="username" column="username" type="java.lang.String"
+			length="45" />
+		<property name="password" column="password" type="java.lang.String"
+			length="45" />
+	</class>
+</hibernate-mapping>

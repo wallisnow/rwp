@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.rulemgt.ruleset.model.RulesetBoLogVO" table="RULESET_BO_LOG">
+<id name="logId" column="LOG_ID" type="java.lang.Long">
+<generator class="assigned"/>
+</id>
+<property name="oprCode" column="OPR_CODE" type="java.lang.String" length="20"/>
+<property name="oprTime" column="OPR_TIME" type="java.util.Date" />
+<property name="oprType" column="OPR_TYPE" type="java.lang.String" length="4"/>
+<property name="boId" column="BO_ID" type="java.lang.Long" length="18"/>
+<property name="rulesetId" column="RULESET_ID" type="java.lang.Long" length="18"/>
+<property name="rulesetVersion" column="RULESET_VERSION" type="java.lang.String" length="12"/>
+<property name="boName" column="BO_NAME" type="java.lang.String" length="50"/>
+<property name="boDesc" column="BO_DESC" type="java.lang.String" length="100"/>
+<property name="dataType" column="DATA_TYPE" type="java.lang.String" length="10"/>
+</class>
+</hibernate-mapping>
+

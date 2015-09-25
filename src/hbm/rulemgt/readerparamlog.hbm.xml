@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.rulemgt.reader.model.ReaderParamLogVO" table="RULE_READER_PARAM_LOG">
+<id name="logId" column="LOG_ID" type="java.lang.Long">
+<generator class="assigned"/>
+</id>
+<property name="oprCode" column="OPR_CODE" type="java.lang.String" length="20"/>
+<property name="oprTime" column="OPR_TIME" type="java.util.Date" />
+<property name="oprType" column="OPR_TYPE" type="java.lang.String" length="4"/>
+<property name="paramId" column="PARAM_ID" type="java.lang.Long" length="22"/>
+<property name="readerId" column="READER_ID" type="java.lang.Long" length="22"/>
+<property name="paramIdx" column="PARAM_IDX" type="java.lang.Integer" />
+<property name="dataType" column="DATA_TYPE" type="java.lang.String" length="10"/>
+<property name="paramType" column="PARAM_TYPE" type="java.lang.String" length="10"/>
+<property name="paramValue" column="PARAM_VALUE" type="java.lang.String" length="100"/>
+</class>
+</hibernate-mapping>
+

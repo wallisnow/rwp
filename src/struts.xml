@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.i18n.reload" value="false" />
+	<constant name="struts.configuration.xml.reload" value="false" />
+	
+	<constant name="struts.ognl.allowStaticMethodAccess" value="true" />
+	
+	<constant name="struts.ui.theme" value="simple" />
+	<constant name="struts.locale" value="zh_CN" />
+
+	<constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+    
+    <!-- 配置文件上传大小为最大50M, 默认值是2097152(2M) -->
+    <constant name="struts.multipart.maxSize" value="52428800"/>
+    
+    <!-- 设置上传文件的临时文件夹,默认使用javax.servlet.context.tempdir -->   
+	<constant name="struts.multipart.saveDir" value="/upload" />
+	
+	<!-- 设置附件保存位置 -->
+	<constant name="attachSavePath" value="D:\temp"/>
+
+	<!-- 全局资源文件定义 -->
+	<constant name="struts.custom.i18n.resources" value="GlobalMessageResources"/>
+
+	<!-- DefaultUnknowHandler 配置参数 -->
+	<constant name="struts.unknownhandler.packageNamePrefix" value="com.congxing" />
+	<constant name="struts.unknownhandler.parentPackageName" value="struts-default" />
+	<!-- 以全部命名空间进行切割 -->
+	<constant name="struts.mapper.alwaysSelectFullNamespace" value="true"/>
+	<bean type="com.opensymphony.xwork2.UnknownHandler" name="defaultUnknownHandler" class="com.congxing.core.web.control.DefaultUnknownHandler" />
+
+
+	<include file="strutsconfig/system.xml"/>
+	<include file="strutsconfig/batch.xml"/>
+
+	<unknown-handler-stack>
+		<unknown-handler-ref name="defaultUnknownHandler" />
+	</unknown-handler-stack>
+
+
+</struts>

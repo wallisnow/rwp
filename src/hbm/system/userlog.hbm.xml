@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.system.user.model.UserLogVO" table="SYS_USER_LOG">
+<id name="logId" column="LOG_ID" type="java.lang.Long">
+<generator class="assigned"/>
+</id>
+<property name="oprCode" column="OPR_CODE" type="java.lang.String" length="20"/>
+<property name="oprTime" column="OPR_TIME" type="java.util.Date" />
+<property name="oprType" column="OPR_TYPE" type="java.lang.String" length="4"/>
+<property name="userId" column="USER_ID" type="java.lang.String" length="50"/>
+<property name="userName" column="USER_NAME" type="java.lang.String" length="50"/>
+<property name="email" column="EMAIL" type="java.lang.String" length="60"/>
+<property name="mobileno" column="MOBILENO" type="java.lang.String" length="12"/>
+<property name="telNumber" column="TEL_NUMBER" type="java.lang.String" length="16"/>
+<property name="birthday" column="BIRTHDAY" type="java.lang.String" length="10"/>
+<property name="dpId" column="DP_ID" type="java.lang.String" length="50"/>
+<property name="dpName" column="DP_NAME" type="java.lang.String" length="60"/>
+<property name="dpCode" column="DP_CODE" type="java.lang.String" length="100"/>
+<property name="parentDpId" column="PARENT_DP_ID" type="java.lang.String" length="50"/>
+<property name="dpFullName" column="DP_FULL_NAME" type="java.lang.String" length="100"/>
+<property name="jobTypeId" column="JOB_TYPE_ID" type="java.lang.String" length="50"/>
+<property name="jobTypeDesc" column="JOB_TYPE_DESC" type="java.lang.String" length="100"/>
+<property name="empClassId" column="EMP_CLASS_ID" type="java.lang.String" length="50"/>
+<property name="empClassDesc" column="EMP_CLASS_DESC" type="java.lang.String" length="50"/>
+<property name="sexId" column="SEX_ID" type="java.lang.String" length="4"/>
+<property name="orderNo" column="ORDER_NO" type="java.lang.String" length="10"/>
+<property name="userRole" column="USER_ROLE" type="java.lang.String" length="20"/>
+<property name="userLigion" column="USER_LIGION" type="java.lang.String" length="20"/>
+<property name="isTmpUser" column="IS_TMP_USER" type="java.lang.String" length="20"/>
+<property name="userType" column="USER_TYPE" type="java.lang.String" length="4"/>
+<property name="status" column="STATUS" type="java.lang.String" length="4"/>
+<property name="password" column="PASSWORD" type="java.lang.String" length="50"/>
+</class>
+</hibernate-mapping>
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.rulemgt.reader.model.ReaderVO" table="RULE_READER">
+<id name="readerId" column="READER_ID" type="java.lang.Long">
+<generator class="assigned"/>
+</id>
+<property name="rulesetId" column="RULESET_ID" type="java.lang.Long" length="22"/>
+<property name="rulesetVersion" column="RULESET_VERSION" type="java.lang.String" length="12"/>
+<property name="readerName" column="READER_NAME" type="java.lang.String" length="100"/>
+<property name="readerDesc" column="READER_DESC" type="java.lang.String" length="1000"/>
+<property name="dbId" column="DB_ID" type="java.lang.Long" length="18"/>
+<property name="readerSql" column="READER_SQL" type="java.lang.String" length="1000"/>
+<property name="readerPriority" column="READER_PRIORITY" type="java.lang.Integer"/>
+</class>
+</hibernate-mapping>
+

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.system.role.model.RoleOfMenuVO" table="SYS_ROLE_OF_MENU">
+<composite-id>
+<key-property name="roleId" column="ROLE_ID" type="java.lang.String" length="20"/>
+<key-property name="menuId" column="MENU_ID" type="java.lang.String" length="20"/>
+</composite-id>
+</class>
+</hibernate-mapping>
+

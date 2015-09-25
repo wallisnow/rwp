@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+	<package name="batchprocess" namespace="/" extends="struts-default">
+        <action name="batch" class="com.congxing.core.web.struts2.BatchProcessAction">
+            <result name="success">/common/batch/status.jsp</result>
+            <result name="error">/common/batch/status.jsp</result>
+        </action>
+    </package>
+
+	<package name="exampleupload" namespace="/example" extends="struts-default">
+        <action name="noneupload" class="com.congxing.core.web.struts2.UploadFileAction">
+            <result name="success">/example/simplebatch/noneaddition.jsp</result>
+            <result name="input">/example/simplebatch/noneaddition.jsp</result>
+        </action>
+        <action name="simpleupload" class="com.congxing.core.web.struts2.UploadFileAction">
+            <result name="success">/example/simplebatch/simple.jsp</result>
+            <result name="input">/example/simplebatch/simple.jsp</result>
+        </action>
+    </package>
+	
+	<package name="exampleupload" namespace="/example" extends="struts-default">
+        <action name="noneupload" class="com.congxing.core.web.struts2.UploadFileAction">
+            <result name="success">/example/simplebatch/noneaddition.jsp</result>
+            <result name="input">/example/simplebatch/noneaddition.jsp</result>
+        </action>
+        <action name="simpleupload" class="com.congxing.core.web.struts2.UploadFileAction">
+            <result name="success">/example/simplebatch/simple.jsp</result>
+            <result name="input">/example/simplebatch/simple.jsp</result>
+        </action>
+    </package>
+    
+    <package name="commentsinfo" namespace="/report/commentsinfo" extends="struts-default">
+		<action name="upload" class="com.congxing.core.web.struts2.UploadFileAction">
+			<result name="success">/report/commentsinfo/batch.jsp</result>
+			<result name="input">/report/commentsinfo/batch.jsp</result>
+		</action>
+	</package>
+</struts>

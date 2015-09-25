@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.system.attach.model.AttachVO" table="SYS_ATTACH">
+<id name="attId" column="ATT_ID" type="java.lang.String">
+<generator class="assigned"/>
+</id>
+<property name="fileName" column="FILE_NAME" type="java.lang.String" length="100"/>
+<property name="savePath" column="SAVE_PATH" type="java.lang.String" length="120"/>
+<property name="saveMonth" column="SAVE_MONTH" type="java.lang.String" length="6"/>
+<property name="saveName" column="SAVE_NAME" type="java.lang.String" length="120"/>
+<property name="upTime" column="UP_TIME" type="java.util.Date" />
+<property name="oprCode" column="OPR_CODE" type="java.lang.String" length="50"/>
+</class>
+</hibernate-mapping>
+

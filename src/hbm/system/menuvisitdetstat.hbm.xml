@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.system.menuvisitdetstat.model.MenuVisitDetStatVO" table="SYS_MENU_VISIT_DET_STAT">
+<composite-id>
+<key-property name="userId" column="USER_ID" type="java.lang.String" length="50"/>
+<key-property name="menuId" column="MENU_ID" type="java.lang.String" length="20"/>
+<key-property name="statDay" column="STAT_DAY" type="java.lang.String" length="8"/>
+</composite-id>
+<property name="visitNum" column="VISIT_NUM" type="java.lang.Integer" length="5"/>
+</class>
+</hibernate-mapping>
+

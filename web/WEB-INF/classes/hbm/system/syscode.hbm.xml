@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.system.syscode.model.SysCodeVO" table="SYS_CODE">
+<id name="seqId" column="SEQ_ID" type="java.lang.Long">
+<generator class="assigned"/>
+</id>
+<property name="type" column="TYPE" type="java.lang.String" length="64"/>
+<property name="name" column="NAME" type="java.lang.String" length="64"/>
+<property name="kind" column="KIND" type="java.lang.String" length="64"/>
+<property name="kindname" column="KINDNAME" type="java.lang.String" length="128"/>
+<property name="memo" column="MEMO" type="java.lang.String" length="128"/>
+</class>
+</hibernate-mapping>
+

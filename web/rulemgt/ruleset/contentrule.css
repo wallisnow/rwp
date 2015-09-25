@@ -1,0 +1,109 @@
+@charset "utf-8";
+
+body {
+	margin:0px;
+	padding:0px;
+	overflow: hidden;
+}
+
+fieldset {margin:5px; padding:5px;}
+
+
+.when_cfg, .then_cfg {width:100%;  padding:0px; overflow: auto;}
+
+.when_cfg_ul, .then_cfg_ul {list-style: none; padding: 2px 5px 2px 5px;}
+
+.when_cfg_ul li, .then_cfg_ul li {height:23px; padding-top:5px; line-height: 21px; white-space:nowrap; margin-right:10px; margin-bottom:5px;}
+
+li.fixed {padding-left:55px;}
+
+
+div.selectBox { 
+	position:absolute;
+	background:#F3F3FA;
+	margin:0;
+	padding:2px;
+	border:1px solid #99bbe8;
+	width:150px;
+	overflow:hidden;
+	display: none;
+	text-align: left;
+}
+div.selectBox li {
+	position:relative;
+	margin:1px;
+	padding:0;
+	padding-left:5px;
+	height:22px;
+	line-height:20px;
+	overflow:hidden;
+	font-size:12px;
+	cursor:pointer;
+	border:1px solid #f0f0f0;
+	_border:1px solid #f0f0f0;
+}
+
+div.selectBox li.hover {
+	border:1px solid #7eabcd;
+	background:#fafafa;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+	cursor:pointer
+}
+
+div.selectBox .selected {
+	background-color:#7cc5e5;
+	border-color:#e4f5ff;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+}
+	
+.factorInput {
+	width:90px;
+	border-top : 0px;
+	border-left : 0px;
+	border-right : 0px;
+	border-bottom : 1px solid #99bbe8;
+	padding-left:5px;
+}
+
+.factorSelect {
+	width:90px;
+	border-top : 0px;
+	border-left : 0px;
+	border-right : 0px;
+	border-bottom : 1px solid #99bbe8;
+	padding-left:5px;
+}
+
+.functionSelect {
+	width:300px;
+	border-top : 0px;
+	border-left : 0px;
+	border-right : 0px;
+	border-bottom : 1px solid #99bbe8;
+	padding-left:5px;
+}
+
+.operatorSelect {
+	width:40px;
+	border-top : 0px;
+	border-left : 0px;
+	border-right : 0px;
+	border-bottom : 1px solid #99bbe8;
+	padding-left:5px;
+	margin:0px 5px 0px 5px;
+}
+
+.assignOperatorInput {
+	width:30px;
+	border-top : 0px;
+	border-left : 0px;
+	border-right : 0px;
+	border-bottom : 1px solid #99bbe8;
+	padding-left:5px;
+	margin:0px 5px 0px 5px;
+}
+

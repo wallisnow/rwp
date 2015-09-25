@@ -1,0 +1,97 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   							http://www.springframework.org/schema/beans/spring-beans-3.1.xsd	    
+	                            http://www.springframework.org/schema/tx 
+	                            http://www.springframework.org/schema/tx/spring-tx-3.1.xsd 
+	                            http://www.springframework.org/schema/jee 
+	                            http://www.springframework.org/schema/jee/spring-jee-3.1.xsd 
+	                            http://www.springframework.org/schema/context 
+	                            http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+
+	<!-- 使用annotation 自动注册bean,并保证@Required,@Autowired的属性被注入 -->
+	<context:component-scan base-package="com.congxing" />
+	
+	<!-- 配置目的支持Action中有多个大写字母信息 -->
+	<context:component-scan base-package="com.congxing" name-generator="com.congxing.core.web.control.ActionNameGenerator">
+		<context:include-filter type="custom" expression="com.congxing.core.web.control.ActionTypeFilter"/>
+	</context:component-scan>
+	
+	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
+	 	<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/usersdb?useUnicode=true&amp;characterEncoding=UTF-8" />
+		<property name="username" value="root"/>
+		<property name="password" value="root"/>
+		<property name="idleMaxAge" value="240"/>
+		<property name="idleConnectionTestPeriod" value="15"/>
+		<property name="maxConnectionsPerPartition" value="5"/>
+		<property name="minConnectionsPerPartition" value="3"/>
+		<property name="partitionCount" value="3"/>
+		<property name="acquireIncrement" value="5"/>
+		<property name="statementsCacheSize" value="100"/>
+		<property name="releaseHelperThreads" value="3"/>
+	</bean>
+	
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">false</prop>
+			</props>
+		</property>
+		<property name="mappingLocations"> 
+			<list>
+				<value>classpath:/hbm/**/*.hbm.xml</value> 
+			</list> 
+		</property>
+	</bean>
+	
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
+	<!-- 配置基于拦截器的事务控制  -->
+	<bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="doFind*">PROPAGATION_REQUIRED, readOnly</prop>
+				<prop key="doQuery">PROPAGATION_REQUIRED, readOnly</prop>
+				<prop key="doCreate">PROPAGATION_REQUIRED, -Exception</prop>
+				<prop key="doUpdate">PROPAGATION_REQUIRED, -Exception</prop>
+				<prop key="doProcess">PROPAGATION_REQUIRED, -Exception</prop>
+				<prop key="doRemoveByVO">PROPAGATION_REQUIRED, -Exception</prop>
+				<prop key="doRemoveByPK">PROPAGATION_REQUIRED, -Exception</prop>
+				<prop key="do*">PROPAGATION_REQUIRED, -Exception</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 配置基于类名代理 -->
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames">
+						<value>*ServiceImpl</value>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>transactionInterceptor</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- SpringContext Manager -->
+	<bean class="com.congxing.core.utils.SpringContextManager" lazy-init="false"/>
+	
+	<bean class="com.congxing.core.hibernate.DAOFactory" factory-method="init">
+		<constructor-arg ref="sessionFactory"/>
+	</bean>
+	
+	<import resource="quartz.xml"/>
+
+</beans>

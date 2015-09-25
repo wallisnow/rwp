@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+<class name="com.congxing.system.menu.model.MenuVO" table="SYS_MENU">
+<id name="seqId" column="SEQ_ID" type="java.lang.Long">
+<generator class="assigned"/>
+</id>
+<property name="menuId" column="MENU_ID" type="java.lang.String" length="20"/>
+<property name="parentMenuId" column="PARENT_MENU_ID" type="java.lang.String" length="20"/>
+<property name="menuName" column="MENU_NAME" type="java.lang.String" length="60"/>
+<property name="menuType" column="MENU_TYPE" type="java.lang.String" length="4"/>
+<property name="menuUrl" column="MENU_URL" type="java.lang.String" length="200"/>
+<property name="menuDesc" column="MENU_DESC" type="java.lang.String" length="200"/>
+<property name="status" column="STATUS" type="java.lang.String" length="4"/>
+</class>
+</hibernate-mapping>
+
