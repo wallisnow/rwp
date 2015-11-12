@@ -14,7 +14,8 @@
 
 
 	$(function(){
-		initPageUI()
+		initPageUI();
+		
 		var treePanelH = $(window).height();
 		$("#treePanel").height(treePanelH);
 		var treeXML = "${paramsMap.treeXML}";

@@ -7,10 +7,6 @@
 <title><s:text name="title" /></title>
 <%@ include file="/common/header.jsp"%>
 <script type="text/javascript">
-	cmdAdd = "/system/test/add.action";
-	cmdDelete = "/system/test/delete.action";
-	cmdEdit = "/system/test/edit.action";
-	cmdLoad = "/system/test/batch.jsp";
 	$(function() {
 		initPageEnv("list");
 	});
@@ -34,8 +30,7 @@
 			<div class="searchContent">
 				<p>
 					<label><s:text name="_seq_username" />:</label>
-					<cx:textfield name="_seq_username"
-						value="%{paramsMap._seq_username}" />
+					<cx:textfield name="_seq_username" value="%{paramsMap._seq_username}" />
 				</p>
 			</div>
 			<div class="searchBar">
@@ -57,8 +52,7 @@
 				<table class="list nowrap">
 					<thead>
 						<tr>
-							<th><input type="checkbox" name="chooseAll"
-								onclick="checkAll()" /></th>
+							<th><input type="checkbox" name="chooseAll" onclick="checkAll()" /></th>
 							<th><s:text name="testId" /></th>
 							<th><s:text name="username" /></th>
 							<th><s:text name="password" /></th>

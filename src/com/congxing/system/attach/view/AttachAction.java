@@ -55,7 +55,7 @@ public class AttachAction extends BaseAction{
 			logger.info("Upload Attach[" + this.getUserVO().getUserId() + "|" + orgAttIds + "|" + newAttIds + "]");
 			
 			BeanUtils.setProperty(entityVO, targetAttach.getAttCol(), newAttIds);
-			this.getService().doUpdate(voClass, entityVO);
+			this.getService().doUpdate(voClass, entityVO,userVO);
 		} catch (Exception ex){
 			ex.printStackTrace();
 			this.addErrorMessage(ex.getMessage());

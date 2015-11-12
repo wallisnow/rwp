@@ -14,5 +14,4 @@ public class TestAction extends BaseAction {
 		this.voClass = TestVO.class;
 		this.pkNameArray = new String[]{"testId"};
 	}
-
 }

@@ -20,153 +20,146 @@ import com.congxing.system.role.model.RoleVO;
 import com.congxing.system.user.model.UserVO;
 import com.opensymphony.xwork2.ActionSupport;
 
-
 @SuppressWarnings("serial")
-public class RoleAction extends BaseAction{	
-	
-	public RoleAction(){
+public class RoleAction extends BaseAction {
+
+	public RoleAction() {
 		this.voClass = RoleVO.class;
-		this.pkNameArray = new String[]{"roleId"};
+		this.pkNameArray = new String[] { "roleId" };
 	}
-	
+
 	protected void setSaveEntityVO(Object entityVO, Map<String, Object> paramsMap, UserVO userVO) throws Exception {
 		String curMaxRoleId = (String) this.getService().doFindMaxPropertyValue(voClass, "roleId");
-		if(StringUtils.isBlank(curMaxRoleId)){
+		if (StringUtils.isBlank(curMaxRoleId)) {
 			curMaxRoleId = Constants.ROLE_ID_START;
 		}
 		String nextRoleId = String.valueOf(Integer.parseInt(curMaxRoleId) + 1);
-		((RoleVO)entityVO).setRoleId(nextRoleId);
+		((RoleVO) entityVO).setRoleId(nextRoleId);
 	}
-	
-	public void saveRoleJson() throws IOException{
-		try{
+
+	public void saveRoleJson() throws IOException {
+		try {
 			paramsMap = ParamsBuilder.buildMapFromHttpRequest();
 			String isNew = (String) paramsMap.get(Constants.PAGE_ISNEW);
 			this.setParamsMapToTargetObject(paramsMap, this.getEntityVO());
 			RoleVO roleVO = (RoleVO) this.getEntityVO();
-			roleVO.setRoleName( java.net.URLDecoder.decode(roleVO.getRoleName()));
-			if(Constants.STRING_TRUE.equals(isNew)){
+			roleVO.setRoleName(java.net.URLDecoder.decode(roleVO.getRoleName()));
+			if (Constants.STRING_TRUE.equals(isNew)) {
 				this.setSaveEntityVO(this.getEntityVO(), paramsMap, userVO);
-				if(this.getEntityVO() instanceof Business){
-					BusinessLogVO logVO = BusinessLogVO.create(userVO, Constants.OPRTYPE_ADD, (Business)this.getEntityVO());
-					entityVO = this.getService().doCreate(voClass, this.getEntityVO(), BusinessLogVO.class, logVO);
-				}else{
-					entityVO = this.getService().doCreate(voClass, this.getEntityVO());
-				}
+				entityVO = this.getService().doCreate(voClass, this.getEntityVO(), userVO);
+
 				this.sendJsonMessage(JsonResult.create(ActionSupport.SUCCESS, "保存成功!"));
-			}else{
+			} else {
 				this.setUpdateEntityVO(this.getEntityVO(), paramsMap, userVO);
-				if(this.getEntityVO() instanceof Business){
-					BusinessLogVO logVO = BusinessLogVO.create(userVO, Constants.OPRTYPE_MODIFY, (Business)this.getEntityVO());
-					entityVO = this.getService().doUpdate(voClass, this.getEntityVO(), BusinessLogVO.class, logVO);
-				}else{
-					entityVO = this.getService().doUpdate(voClass, this.getEntityVO());
-				}
+				entityVO = this.getService().doUpdate(voClass, this.getEntityVO(), userVO);
 				this.sendJsonMessage(JsonResult.create(ActionSupport.SUCCESS, "修改成功!"));
 			}
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			this.sendJsonMessage(JsonResult.create(ActionSupport.ERROR, "保存失败,失败原因:" + ex.getMessage()));
 		}
 	}
-	
+
 	/**
 	 * @Title: rolemgr
 	 * @Description: 进入角色管理界面
 	 * @return
 	 */
-	public String rolemgr(){
+	public String rolemgr() {
 		return ActionSupport.SUCCESS;
 	}
-	
+
 	/**
 	 * @Title: menutree
 	 * @Description: 进入角色菜单设计界面
 	 * @return
 	 */
-	public String menutree(){
-		try{
+	public String menutree() {
+		try {
 			paramsMap = ParamsBuilder.buildMapFromHttpRequest();
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			return ActionSupport.ERROR;
 		}
 		return ActionSupport.SUCCESS;
 	}
-	
+
 	/**
 	 * @Title: queryRoleMenusJson
 	 * @Description: 异步获取菜单树信息
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@SuppressWarnings("unchecked")
-	public void queryRoleMenuPageJson() throws IOException{
-		try{
+	public void queryRoleMenuPageJson() throws IOException {
+		try {
 			paramsMap = ParamsBuilder.buildMapFromHttpRequest();
 			String roleId = (String) paramsMap.get("roleId");
-			if(!StringUtils.isNotBlank(roleId)){
+			if (!StringUtils.isNotBlank(roleId)) {
 				this.sendJsonMessage(JsonResult.create(ActionSupport.ERROR, "角色信息为空"));
 			}
 			QueryRoleOfMenuStrategy strategy = new QueryRoleOfMenuStrategy(roleId, Constants.MENU_TYPE_PAGE);
 			List<MenuVO> menuList = (List<MenuVO>) this.getService().doProcess(strategy);
-			StringBuffer roleMenuXML = TreeBuilder.buildTreeXML(menuList, "menuId", "menuName", "parentMenuId", null, "chked");
+			StringBuffer roleMenuXML = TreeBuilder.buildTreeXML(menuList, "menuId", "menuName", "parentMenuId", null,
+					"chked");
 			this.sendJsonMessage(JsonResult.create(ActionSupport.SUCCESS, roleMenuXML.toString()));
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			this.sendJsonMessage(JsonResult.create(ActionSupport.ERROR, ex.getMessage()));
 		}
 	}
-	
+
 	/**
 	 * @Title: queryRoleMenusJson
 	 * @Description: 异步获取菜单树信息
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	@SuppressWarnings("unchecked")
-	public void queryRoleMenuControlJson() throws IOException{
-		try{
+	public void queryRoleMenuControlJson() throws IOException {
+		try {
 			paramsMap = ParamsBuilder.buildMapFromHttpRequest();
 			String roleId = (String) paramsMap.get("roleId");
-			if(!StringUtils.isNotBlank(roleId)){
+			if (!StringUtils.isNotBlank(roleId)) {
 				this.sendJsonMessage(JsonResult.create(ActionSupport.ERROR, "角色信息为空"));
 			}
 			String menuId = (String) paramsMap.get("menuId");
-			if(!StringUtils.isNotBlank(menuId)){
+			if (!StringUtils.isNotBlank(menuId)) {
 				this.sendJsonMessage(JsonResult.create(ActionSupport.ERROR, "菜单信息为空"));
 			}
 			QueryRoleOfMenuStrategy strategy = new QueryRoleOfMenuStrategy(roleId, Constants.MENU_TYPE_CONTROL, menuId);
 			List<MenuVO> menuList = (List<MenuVO>) this.getService().doProcess(strategy);
-			StringBuffer roleMenuXML = TreeBuilder.buildTreeXML(menuList, "menuId", "menuName", "parentMenuId", null, "chked");
+			StringBuffer roleMenuXML = TreeBuilder.buildTreeXML(menuList, "menuId", "menuName", "parentMenuId", null,
+					"chked");
 			this.sendJsonMessage(JsonResult.create(ActionSupport.SUCCESS, roleMenuXML.toString()));
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			this.sendJsonMessage(JsonResult.create(ActionSupport.ERROR, ex.getMessage()));
 		}
 	}
-	
+
 	/**
 	 * @Title: saveRoleOfMenusJson
 	 * @Description: 保存页面择菜单项
 	 * @throws IOException
 	 */
-	public void saveRoleOfMenusJson() throws IOException{
-		try{
+	public void saveRoleOfMenusJson() throws IOException {
+		try {
 			paramsMap = ParamsBuilder.buildMapFromHttpRequest();
 			String addMenus = (String) paramsMap.get("addMenus");
 			String delMenus = (String) paramsMap.get("delMenus");
 			String roleId = (String) paramsMap.get("roleId");
-			String []addMenuIds = null;
-			String []delMenuIds = null;
-			if(StringUtils.isNotBlank(addMenus)){
+			String[] addMenuIds = null;
+			String[] delMenuIds = null;
+			if (StringUtils.isNotBlank(addMenus)) {
 				addMenuIds = addMenus.split("\\|");
 			}
-			if(StringUtils.isNotBlank(delMenus)){
+			if (StringUtils.isNotBlank(delMenus)) {
 				delMenuIds = delMenus.split("\\|");
 			}
 			SaveRoleOfMenuStrategy strategy = new SaveRoleOfMenuStrategy(roleId, addMenuIds, delMenuIds, userVO);
 			this.getService().doProcess(strategy);
 			this.sendJsonMessage(JsonResult.create(ActionSupport.SUCCESS, "保存成功!"));
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			ex.printStackTrace();
 			this.sendJsonMessage(JsonResult.create(ActionSupport.ERROR, "保存失败,失败原因:" + ex.getMessage()));
 		}
 	}
+
 	/**
 	 * @Title: saveRoleOfMenusJson
 	 * @Description: 保存页面择菜单项
@@ -174,36 +167,23 @@ public class RoleAction extends BaseAction{
 	 */
 	@Override
 	public String save() {
-		try{
+		try {
 			paramsMap = ParamsBuilder.buildMapFromHttpRequest();
 			String isNew = (String) paramsMap.get(Constants.PAGE_ISNEW);
 			this.setParamsMapToTargetObject(paramsMap, this.getEntityVO());
-			if(Constants.STRING_TRUE.equals(isNew)){
+			if (Constants.STRING_TRUE.equals(isNew)) {
 				this.setSaveEntityVO(this.getEntityVO(), paramsMap, userVO);
-				if(this.getEntityVO() instanceof Business){
-					BusinessLogVO logVO = BusinessLogVO.create(userVO, Constants.OPRTYPE_ADD, (Business)this.getEntityVO());
-					entityVO = this.getService().doCreate(voClass, this.getEntityVO(), BusinessLogVO.class, logVO);
-				}else{
-					entityVO = this.getService().doCreate(voClass, this.getEntityVO());
-				}
+				entityVO = this.getService().doCreate(voClass, this.getEntityVO(), userVO);
 				this.sendJsonMessage(JsonResult.create(ActionSupport.SUCCESS, "保存成功!"));
-			}else{
+			} else {
 				this.setUpdateEntityVO(this.getEntityVO(), paramsMap, userVO);
-				if(this.getEntityVO() instanceof Business){
-					BusinessLogVO logVO = BusinessLogVO.create(userVO, Constants.OPRTYPE_MODIFY, (Business)this.getEntityVO());
-					entityVO = this.getService().doUpdate(voClass, this.getEntityVO(), BusinessLogVO.class, logVO);
-				}else{
-					entityVO = this.getService().doUpdate(voClass, this.getEntityVO());
-				}
+				entityVO = this.getService().doUpdate(voClass, this.getEntityVO(), userVO);
 			}
 			paramsMap.put("ISSUC", "TRUE");
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 		return ActionSupport.SUCCESS;
 	}
-	
 
-	
-	
 }

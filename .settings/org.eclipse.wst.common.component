@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="rwp">
+    <wb-module deploy-name="rwpOld">
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <wb-resource deploy-path="/" source-path="/web"/>
-        <property name="context-root" value="rwp"/>
-        <property name="java-output-path" value="/rwp/web/WEB-INF/classes"/>
+        <property name="java-output-path" value="/rwpOld/web/WEB-INF/classes"/>
+        <property name="context-root" value="rwpOld"/>
     </wb-module>
 </project-modules>

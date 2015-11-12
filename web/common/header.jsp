@@ -7,7 +7,7 @@
 
 <link href="${ctx}/plugin/linkbutton/css/linkbutton.css" rel="stylesheet" type="text/css"/>
 <link href="${ctx}/plugin/linkbutton/css/icon.css" rel="stylesheet" type="text/css"/>
-
+<link href="${ctx}/plugin/dialogBox/css/jquery.dialogbox.css" rel="stylesheet" type="text/css"/>
 <!--[if IE]>
 <link href="${ctx}/css/dwzcss/ieHack.css" rel="stylesheet" type="text/css" media="screen"/>
 <![endif]-->
@@ -51,9 +51,10 @@
 <script src="${ctx}/js/select.js" type="text/javascript"></script>
 <script src="${ctx}/js/translate.js" type="text/javascript"></script>
 <script src="${ctx}/js/attach.js" type="text/javascript"></script>
-
+<script src="${ctx}/js/jquery.tmpl.js" type="text/javascript"></script>
+<script src="${ctx}/js/form.serialize-json.js" type="text/javascript"></script>
 <script src="${ctx}/plugin/linkbutton/jquery.linkbutton.js" type="text/javascript"></script>
-
+<script src="${ctx}/plugin/dialogBox/js/jquery.dialogBox.js" type="text/javascript"></script>
 <script type="text/javascript">
 	var ctx = "${ctx}";
 </script>

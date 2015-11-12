@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.congxing.system.generalconfig.model.GeneralConfigVO"
+		table="generalconfig">
+		<id name="generalconfigId" column="generalconfig_id" type="java.lang.Long">
+			<generator class="assigned" />
+		</id>
+		<property name="formtitle" column="formtitle" type="java.lang.String"
+			length="45" />
+		<property name="formname" column="formname" type="java.lang.String"
+			length="45" />
+		<property name="resource" column="resource" type="java.lang.String"
+			length="45" />
+		<property name="sqlstatement" column="sqlstatement" type="java.lang.String"
+			length="45" />
+		<property name="author" column="author" type="java.lang.String"
+			length="45" />
+		<property name="creatingtime" column="creatingtime" type="java.util.Date"
+			length="45" />
+		<property name="mender" column="mender" type="java.lang.String"
+			length="40" />
+		<property name="modtime" column="modtime" type="java.util.Date"
+			length="45" />
+		<property name="des" column="des" type="java.lang.String"
+			length="250" />
+		<property name="url" column="url" type="java.lang.String"
+			length="250" />
+		<property name="realsql" column="realsql" type="java.lang.String"
+			length="50" />
+	</class>
+</hibernate-mapping>

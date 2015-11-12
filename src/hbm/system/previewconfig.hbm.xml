@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-10-26 14:40:45 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.congxing.system.generalconfig.model.PreviewConfigVO" table="generalconfigdata">
+        <id name="generalConfigData_id" type="long">
+            <column name="GENERALCONFIGDATA_ID" />
+            <generator class="assigned" />
+        </id>
+        <property name="generalConfig_id" type="long">
+            <column name="GENERALCONFIG_ID" />
+        </property>
+        <property name="tableName" type="java.lang.String">
+            <column name="TABLENAME" />
+        </property>
+        <property name="field" type="java.lang.String">
+            <column name="FIELD" />
+        </property>
+        <property name="fieldName" type="java.lang.String">
+            <column name="FIELDNAME" />
+        </property>
+        <property name="isSelectedAsKey" type="java.lang.String">
+            <column name="ISSELECTEDASKEY" />
+        </property>
+        <property name="isSetAsHidden" type="java.lang.String">
+            <column name="ISSETASHIDDEN" /> 
+        </property>
+        <property name="rename" type="java.lang.String">
+            <column name="RNAME" />
+        </property>
+        <property name="creatingtime" type="java.util.Date">
+            <column name="CREATINGTIME" />
+        </property>
+        <property name="author" type="java.lang.String">
+            <column name="AUTHOR" />
+        </property>
+        <property name="mender" type="java.lang.String">
+            <column name="MENDER" />
+        </property>
+        <property name="modtime" type="java.util.Date">
+            <column name="MODTIME" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -22,12 +22,14 @@ import com.congxing.core.service.CommonService;
 import com.congxing.core.utils.ConvertUtils;
 import com.congxing.core.utils.DateFormatFactory;
 import com.congxing.core.utils.JsonUtils;
+import com.congxing.core.utils.LogInfoUtils;
 import com.congxing.core.utils.ParamsBuilder;
 import com.congxing.core.utils.PkUtils;
 import com.congxing.core.utils.ReflectionUtils;
 import com.congxing.core.utils.Struts2Utils;
 import com.congxing.core.web.constant.Constants;
 import com.congxing.system.businesslog.model.BusinessLogVO;
+import com.congxing.system.generaloperlog.model.GeneralOperationLogVO;
 import com.congxing.system.user.model.UserVO;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -185,23 +187,12 @@ public abstract class BaseAction extends ActionSupport {
 			this.setParamsMapToTargetObject(paramsMap, this.getEntityVO());
 			if (Constants.STRING_TRUE.equals(isNew)) {
 				this.setSaveEntityVO(this.getEntityVO(), paramsMap, userVO);
-				if (this.getEntityVO() instanceof Business) {
-					BusinessLogVO logVO = BusinessLogVO.create(userVO, Constants.OPRTYPE_ADD,
-							(Business) this.getEntityVO());
-					entityVO = this.getService().doCreate(voClass, this.getEntityVO(), BusinessLogVO.class, logVO);
-				} else {
-					entityVO = this.getService().doCreate(voClass, this.getEntityVO());
-				}
+				entityVO = this.getService().doCreate(voClass, this.getEntityVO(), userVO);
 				this.addInfoMessage("保存成功");
 			} else {
 				this.setUpdateEntityVO(this.getEntityVO(), paramsMap, userVO);
-				if (this.getEntityVO() instanceof Business) {
-					BusinessLogVO logVO = BusinessLogVO.create(userVO, Constants.OPRTYPE_MODIFY,
-							(Business) this.getEntityVO());
-					entityVO = this.getService().doUpdate(voClass, this.getEntityVO(), BusinessLogVO.class, logVO);
-				} else {
-					entityVO = this.getService().doUpdate(voClass, this.getEntityVO());
-				}
+				entityVO = this.getService().doUpdate(voClass, this.getEntityVO(), userVO);
+
 				this.addInfoMessage("修改成功");
 			}
 			this.setTargetObjectToParamsMap(entityVO, paramsMap);
@@ -228,23 +219,11 @@ public abstract class BaseAction extends ActionSupport {
 			this.setParamsMapToTargetObject(paramsMap, this.getEntityVO());
 			if (Constants.STRING_TRUE.equals(isNew)) {
 				this.setSaveEntityVO(this.getEntityVO(), paramsMap, userVO);
-				if (this.getEntityVO() instanceof Business) {
-					BusinessLogVO logVO = BusinessLogVO.create(userVO, Constants.OPRTYPE_ADD,
-							(Business) this.getEntityVO());
-					entityVO = this.getService().doCreate(voClass, this.getEntityVO(), BusinessLogVO.class, logVO);
-				} else {
-					entityVO = this.getService().doCreate(voClass, this.getEntityVO());
-				}
+				entityVO = this.getService().doCreate(voClass, this.getEntityVO(), userVO);
 				this.sendJsonMessage(JsonResult.create(ActionSupport.SUCCESS, "保存成功"));
 			} else {
 				this.setUpdateEntityVO(this.getEntityVO(), paramsMap, userVO);
-				if (this.getEntityVO() instanceof Business) {
-					BusinessLogVO logVO = BusinessLogVO.create(userVO, Constants.OPRTYPE_MODIFY,
-							(Business) this.getEntityVO());
-					entityVO = this.getService().doUpdate(voClass, this.getEntityVO(), BusinessLogVO.class, logVO);
-				} else {
-					entityVO = this.getService().doUpdate(voClass, this.getEntityVO());
-				}
+				entityVO = this.getService().doUpdate(voClass, this.getEntityVO(), userVO);
 				this.sendJsonMessage(JsonResult.create(ActionSupport.SUCCESS, "修改成功"));
 			}
 		} catch (Exception ex) {
@@ -317,14 +296,7 @@ public abstract class BaseAction extends ActionSupport {
 			if (null != pkValues && pkValues.length > 0)
 				for (int index = 0; index < pkValues.length; index++) {
 					Serializable serVO = PkUtils.getPkVO(voClass, pkNameArray, pkValues[index]);
-					Object entityVO = this.getService().doFindByPK(voClass, serVO);
-					if (entityVO instanceof Business) {
-						BusinessLogVO logVO = BusinessLogVO.create(userVO, Constants.OPRTYPE_DELETE,
-								(Business) entityVO);
-						this.getService().doRemoveByPK(voClass, serVO, BusinessLogVO.class, logVO);
-					} else {
-						this.getService().doRemoveByPK(voClass, serVO);
-					}
+					this.getService().doRemoveByPK(voClass, serVO, userVO);
 				}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -347,14 +319,7 @@ public abstract class BaseAction extends ActionSupport {
 			if (null != pkValues && pkValues.length > 0)
 				for (int index = 0; index < pkValues.length; index++) {
 					Serializable serVO = PkUtils.getPkVO(voClass, pkNameArray, pkValues[index]);
-					Object entityVO = this.getService().doFindByPK(voClass, serVO);
-					if (entityVO instanceof Business) {
-						BusinessLogVO logVO = BusinessLogVO.create(userVO, Constants.OPRTYPE_DELETE,
-								(Business) entityVO);
-						this.getService().doRemoveByPK(voClass, serVO, BusinessLogVO.class, logVO);
-					} else {
-						this.getService().doRemoveByPK(voClass, serVO);
-					}
+					this.getService().doRemoveByPK(voClass, serVO, userVO);
 				}
 			this.sendJsonMessage(JsonResult.create(ActionSupport.SUCCESS, "删除记录成功"));
 		} catch (Exception ex) {
@@ -495,7 +460,7 @@ public abstract class BaseAction extends ActionSupport {
 				entityVO = voClass.newInstance();
 			}
 		} catch (Exception ex) {
-			throw new Exception(" voClass not fefinition or invalidate !");
+			throw new Exception(" voClass not definition or invalidate !");
 		}
 		return entityVO;
 	}

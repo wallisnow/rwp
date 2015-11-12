@@ -81,8 +81,7 @@
 		<cx:Msg />
 	</h2>
 
-	<form action="${ctx}/system/user/list.action" method="post"
-		id="listForm">
+	<form action="${ctx}/system/user/list.action" method="post" id="listForm">
 		<div class="pageMsgInfo">
 			<cx:Msg />
 		</div>
@@ -91,8 +90,7 @@
 				<p>
 					<label><s:text name="_sk_userId" />:</label>
 					<s:textfield name="_sk_userId" value="%{paramsMap._sk_userId}" />
-					<a href="javascript:void(0)" class="btnLook"
-						onclick='selectUser("_sk_userId");'></a>
+					<a href="javascript:void(0)" class="btnLook" onclick='selectUser("_sk_userId");'></a>
 				</p>
 				<p>
 					<label><s:text name="_sk_userName" />:</label>
@@ -101,13 +99,9 @@
 			</div>
 
 			<div class="searchBar">
-				<a href="javascript:void(0);" onclick="doQuery();return false;"
-					class="linkbutton" data-options="iconCls:'icon-query'"><s:text
-						name="query" /></a> <a href="javascript:void(0);"
-					onclick="doReset();return false;" class="linkbutton"
-					data-options="iconCls:'icon-reset'"><s:text name="reset" /></a> <a
-					href="javascript:void(0);" onclick="doLoad();return false;"
-					class="linkbutton"><s:text name="load" /></a>
+				<a href="javascript:void(0);" onclick="doQuery();return false;" class="linkbutton" data-options="iconCls:'icon-query'"><s:text name="query" /></a>
+				<a href="javascript:void(0);" onclick="doReset();return false;" class="linkbutton" data-options="iconCls:'icon-reset'"><s:text name="reset" /></a>
+				<a href="javascript:void(0);" onclick="doLoad();return false;" class="linkbutton"><s:text name="load" /></a>
 			</div>
 		</div>
 

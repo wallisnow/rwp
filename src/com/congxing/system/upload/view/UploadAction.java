@@ -31,27 +31,29 @@ public class UploadAction extends BaseAction {
 	/* 接受依赖注入的属性 */
 	@Inject("attachSavePath")
 	private String savePath;
-	
+
 	private static final String FILE_UPLOAD_PROGRESS = "FILE_UPLOAD_PROGRESS";
-	
+
 	/**
 	 * 进入上传附件页面
+	 * 
 	 * @return
 	 */
-	public String attach(){
+	public String attach() {
 		return ActionSupport.SUCCESS;
 	}
 
 	/**
 	 * 上传附件操作
+	 * 
 	 * @return
 	 */
 	public String uploadFile() {
 		ProgressVO progress = new ProgressVO();
 		Struts2Utils.setSessionAttribute(FILE_UPLOAD_PROGRESS, progress);
-		try{
+		try {
 			this.uploadFile(progress, userVO);
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			progress.setStatus(ProgressVO.STATUS_ERROR);
 			progress.setErrorMsg(ex.getMessage());
 			ex.printStackTrace();
@@ -59,34 +61,36 @@ public class UploadAction extends BaseAction {
 		progress.setStatus(ProgressVO.STATUS_DONE);
 		return SUCCESS;
 	}
-	
+
 	/**
 	 * 获取文件上传进度
 	 */
-	public void progressJson(){
-		try{
+	public void progressJson() {
+		try {
 			ProgressVO progress = (ProgressVO) Struts2Utils.getSessionAttribute(FILE_UPLOAD_PROGRESS);
 			this.sendJsonMessage(JsonUtils.toJson(progress));
-		}catch(Exception ex){
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 上传文件并保存附件操作
+	 * 
 	 * @param request
 	 * @param response
 	 * @param progress
 	 * @param userVO
 	 */
-	private void uploadFile(ProgressVO progress, UserVO userVO){
-        try {
-        	String saveFileName = FilenameUtil.nameByStyle(userVO.getUserId(), FilenameUtil.NAMESTYLE_RENAME, this.getImageFileName(), true);
+	private void uploadFile(ProgressVO progress, UserVO userVO) {
+		try {
+			String saveFileName = FilenameUtil.nameByStyle(userVO.getUserId(), FilenameUtil.NAMESTYLE_RENAME,
+					this.getImageFileName(), true);
 
 			String month = DateFormatFactory.getInstance("yyyyMM").format(new java.util.Date());
 			String newSavePath = this.getSavePath() + File.separator + month;
 			File dir = new File(newSavePath);
-			if(!dir.exists()){
+			if (!dir.exists()) {
 				dir.mkdir();
 			}
 			String targetFullFileName = newSavePath + File.separator + saveFileName;
@@ -99,50 +103,55 @@ public class UploadAction extends BaseAction {
 			progress.setErrorMsg(e.getMessage());
 			progress.setStatus(ProgressVO.STATUS_ERROR);
 			e.printStackTrace();
-		} catch (Exception ex){
+		} catch (Exception ex) {
 			progress.setErrorMsg(ex.getMessage());
 			progress.setStatus(ProgressVO.STATUS_ERROR);
 			ex.printStackTrace();
 		}
 		progress.setStatus(ProgressVO.STATUS_DONE);
 	}
-	
+
 	/**
 	 * 保存文件
-	 * @param srcFile 原始文件
-	 * @param targetFullFileName 目标存储文件名(包含全路径)
+	 * 
+	 * @param srcFile
+	 *            原始文件
+	 * @param targetFullFileName
+	 *            目标存储文件名(包含全路径)
 	 * @param progress
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@SuppressWarnings("unused")
-	private void copy(File srcFile, String targetFullFileName, ProgressVO progress) throws Exception{
+	private void copy(File srcFile, String targetFullFileName, ProgressVO progress) throws Exception {
 		FileInputStream fis = null;
 		FileOutputStream fos = null;
-    	try{
-    		fis = new FileInputStream(srcFile);
-    		fos = new FileOutputStream(targetFullFileName);
-    		
-    		int br = 0;
+		try {
+			fis = new FileInputStream(srcFile);
+			fos = new FileOutputStream(targetFullFileName);
+
+			int br = 0;
 			int fileLength = 0;
 			byte[] buffer = new byte[1024];
 			long bytesRead = 0L;
-			
-			while((br = fis.read(buffer)) != -1){
+
+			while ((br = fis.read(buffer)) != -1) {
 				fos.write(buffer, 0, br);
 				bytesRead = bytesRead + br;
 				fileLength += br;
 				progress.setBytesRead(bytesRead);
 			}
-    	}catch(Exception ex){
-    		ex.printStackTrace();
-    		throw new Exception(ex.getMessage());
-    	}finally{
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new Exception(ex.getMessage());
+		} finally {
 			IOUtils.closeQuietly(fis);
 			IOUtils.closeQuietly(fos);
-    	}
-    }
+		}
+	}
+
 	/**
 	 * 保存附件对象
+	 * 
 	 * @param fileName
 	 * @param savePath
 	 * @param saveName
@@ -150,7 +159,8 @@ public class UploadAction extends BaseAction {
 	 * @return
 	 * @throws Exception
 	 */
-	private AttachVO saveAttachVO(String fileName, String savePath, String saveMonth, String saveName, UserVO user) throws Exception{
+	private AttachVO saveAttachVO(String fileName, String savePath, String saveMonth, String saveName, UserVO user)
+			throws Exception {
 		AttachVO attachVO = new AttachVO();
 		attachVO.setAttId(String.valueOf(Sequence.getSequence()));
 		attachVO.setFileName(fileName);
@@ -159,7 +169,7 @@ public class UploadAction extends BaseAction {
 		attachVO.setSaveName(saveName);
 		attachVO.setUpTime(new java.util.Date());
 		attachVO.setOprCode(user.getUserId());
-		return (AttachVO) this.getService().doCreate(AttachVO.class, attachVO);
+		return (AttachVO) this.getService().doCreate(AttachVO.class, attachVO, userVO);
 	}
 
 	/**

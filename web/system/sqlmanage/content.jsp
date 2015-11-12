@@ -16,6 +16,7 @@
 
 	$(function() {
 		initPageEnv("content");
+		
 	});
 	function doExcutesql() {
 		var formObj = form2Obj();

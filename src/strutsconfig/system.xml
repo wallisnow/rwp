@@ -76,5 +76,20 @@
 			<result name="error">/common/404.jsp</result>
 		</action>
 	</package>
+	
+	<package name="generalconfig" namespace="/system/generalconfig" extends="struts-default">
+		<action name="queryUserDefinedForm"  class="com.congxing.system.generalconfig.view.GeneralconfigAction" method="queryUserDefinedForm">
+			<result name="success">/system/generalconfig/resultpage.jsp</result>
+			<result name="error">/system/generalconfig/resultpage.jsp</result>
+		</action>
+		<action name="queryByKey"  class="com.congxing.system.generalconfig.view.GeneralconfigAction" method="queryByKey">
+			<result name="success">/system/generalconfig/resultpage.jsp</result>
+			<result name="error">/system/generalconfig/resultpage.jsp</result>
+		</action>
+		<action name="previewReportForm"  class="com.congxing.system.generalconfig.view.GeneralconfigAction" method="previewReportForm">
+			<result name="success">/system/generalconfig/previewpage.jsp</result>
+			<result name="error">/system/generalconfig/previewpage.jsp</result>
+		</action>
+	</package>
 
 </struts>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 2015-11-6 17:14:02 by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+    <class name="com.congxing.system.generaloperlog.model.GeneralOperationLogVO" table="general_oper_log">
+        <id name="logId" type="java.lang.Long">
+            <column name="general_oper_id" />
+            <generator class="assigned" />
+        </id>
+        <property name="userId" type="java.lang.String" length="45">
+            <column name="user_id" />
+        </property>
+        <property name="username" type="java.lang.String" length="45">
+            <column name="USERNAME" />
+        </property>
+        <property name="operation" type="java.lang.String" length="45">
+            <column name="OPERATION" />
+        </property>
+        <property name="userip" type="java.lang.String" length="45">
+            <column name="userip" />
+        </property>
+        <property name="dt" type="java.lang.String" length="10">
+            <column name="DT" />
+        </property>
+        <property name="comment" type="java.lang.String" length="250">
+            <column name="COMMENT" />
+        </property>
+    </class>
+</hibernate-mapping>
