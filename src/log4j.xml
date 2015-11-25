@@ -46,6 +46,19 @@
 			<param name="ConversionPattern" value="%d %-5p %m%n" />
 		</layout>
 	</appender>
+	
+	<!-- data change access log -->
+	<appender name="MOD_DATA" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="C:/logs/moddata.log" />
+		<param name="Append" value="true" />
+		<param name="Encoding" value="UTF-8" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p %m%n" />
+		</layout>
+	</appender>
+	
 	<!-- quartz log -->
 	<appender name="QUARTZ" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="File" value="C:/logs/quartz.log" />
@@ -62,6 +75,16 @@
 		<priority value="INFO" />
 		<appender-ref ref="MENU_ACCESS" />
 	</category>
+	
+	<category name="com.congxing.system">
+		<priority value="INFO" />
+		<appender-ref ref="MOD_DATA" />
+	</category>
+	
+	<!-- <category name="com.congxing.system.generaloperlog.view.GeneralOperationLogAction">
+		<priority value="INFO" />
+		<appender-ref ref="MOD_DATA" />
+	</category> -->
 	
 	<category name="webservicehttplog">
 		<priority value="INFO" />

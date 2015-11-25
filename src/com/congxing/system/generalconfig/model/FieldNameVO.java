@@ -1,6 +1,7 @@
 package com.congxing.system.generalconfig.model;
 
-public class FieldNameVO {
+public class FieldNameVO{
+
 	private String COLUMN_NAME;
 	private String COLUMN_COMMENT;
 

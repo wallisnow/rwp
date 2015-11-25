@@ -1,8 +1,10 @@
 package com.congxing.system.generalconfig.model;
 
+import java.io.Serializable;
+
 import com.congxing.core.web.struts2.BaseListVO;
 
-public class GeneralConfigListVO extends BaseListVO {
+public class GeneralConfigListVO extends BaseListVO implements Serializable{
 
 	/**
 	 * 

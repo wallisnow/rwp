@@ -83,7 +83,7 @@
 				<ul class="toolBar">
 					<li><a class="add" href="Javascript:addConfig();"><span>添加</span></a></li>
 					<li><a class="edit" href="Javascript:editConfig();"><span>修改</span></a></li>
-				<!-- <li><a class="delete" href="Javascript:doDelete();"><span>删除</span></a></li>	 -->	
+				 	<li><a class="delete" href="Javascript:doDelete();"><span>删除</span></a></li>
 				</ul>
 			</div>
 			<div class="tableBar">

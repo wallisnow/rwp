@@ -1,6 +1,7 @@
 package com.congxing.system.generalconfig.view;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -18,14 +19,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.cfg.annotations.ResultsetMappingSecondPass;
 import org.hibernate.jdbc.ReturningWork;
 
 import com.congxing.core.dbtool.DBConnectionUtils;
 import com.congxing.core.hibernate.Page;
-import com.congxing.core.utils.DataBaseAtapter;
 import com.congxing.core.utils.JsonUtils;
 import com.congxing.core.utils.ParamsBuilder;
 import com.congxing.core.utils.PkUtils;
+import com.congxing.core.utils.UserDefinedFormUtils;
 import com.congxing.core.web.constant.Constants;
 import com.congxing.core.web.sequence.Sequence;
 import com.congxing.core.web.struts2.BaseAction;
@@ -39,6 +41,14 @@ import com.congxing.system.generalconfig.model.GeneralConfigVO;
 import com.congxing.system.generalconfig.model.PreviewConfigVO;
 import com.opensymphony.xwork2.ActionSupport;
 
+/**
+ * <p>
+ * 次类对应体通用报表功能
+ * </p>
+ * 
+ * @author WU JIANG
+ * @version 1.0
+ */
 public class GeneralconfigAction extends BaseAction {
 
 	/**
@@ -47,17 +57,26 @@ public class GeneralconfigAction extends BaseAction {
 	private static final long serialVersionUID = 1L;
 	private List<FieldNameVO> fieldList;
 
-	private String targetTable;
+	// private String targetTable;
 	private Map<Integer, PreviewConfigVO> configMap;
 
 	// 所有字段名，字段注释 map
 	private Map<String, String> fieldMap;
 
+	/**
+	 * Class constructor
+	 */
 	public GeneralconfigAction() {
 		this.voClass = GeneralConfigVO.class;
 		this.pkNameArray = new String[] { "generalconfigId" };
 	}
 
+	/**
+	 * 用户进入自定义报表后，输入关键字后进行查询
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	public String queryByKey() throws Exception {
 		paramsMap = ParamsBuilder.buildMapFromHttpRequest();
 
@@ -107,11 +126,20 @@ public class GeneralconfigAction extends BaseAction {
 			}
 		}
 
+		int pageNo = Constants.DEFAULT_PAGENO;
+		int pageSize = Constants.DEFAULT_PAGESIZE;
+
+		if (!(paramsMap.get("pageNo") == null || paramsMap.get("pageSize") == null)) {
+			pageNo = Integer.valueOf((String) paramsMap.get("pageNo"));
+			pageSize = Integer.valueOf((String) paramsMap.get("pageSize"));
+		}
+
+		final int currentPageNo = pageNo;
+		final int currentpageSize = pageSize;
+
 		String sql = null;
 
-		if (keyMap.isEmpty()) {
-			sql = realsql;
-		} else {
+		if (!keyMap.isEmpty()) {
 			StringBuffer sb = new StringBuffer();
 			sb.append(realsql);
 			sb.append(" where ");
@@ -129,28 +157,64 @@ public class GeneralconfigAction extends BaseAction {
 					sb.append(" and ");
 				}
 			}
-			sql = sb.toString() + ";";
+			sql = sb.toString();
+		} else {
+			sql = realsql;
 		}
+
+		// String sqlTemp = sql;
 
 		final String newsql = sql;
 
+		String targetTable = gcvo.getFormtitle();
+
+		if (targetTable == null || !StringUtils.isNotBlank(targetTable)) {
+			throw new Exception("this table is inaccessible.");
+		}
+
 		paramsMap.put("selectKeys", selectKeys);
 
-		// CommonService commonServiceImpl = new CommonServiceImpl();
-
-		Page page = this.getService().doReturningWork(new ReturningWork<Page>() {
+		Page workpage = this.getService().doReturningWork(new ReturningWork<Page>() {
 			@Override
 			public Page execute(Connection connection) throws SQLException {
-				PreparedStatement preparedStatement = connection.prepareStatement(newsql);
+
+				Page page = new Page();
+
+				StringBuffer sb = new StringBuffer();
+				sb.append(newsql);
+
+				// 这里将总行数记录为ct
+				String sqlForCount = "select count(*) as ct from (" + newsql + ") as t;";
+				PreparedStatement preparedStatementForCount = connection.prepareStatement(sqlForCount);
+				ResultSet rsForCount = preparedStatementForCount.executeQuery();
+				int rowCount = UserDefinedFormUtils.getResultSetSize(rsForCount);
+				if (rowCount != -1) {
+					sb.append(" limit ");
+					sb.append((currentPageNo - 1) * currentpageSize);
+					sb.append(",");
+					if (rowCount > (currentPageNo * currentpageSize)) {
+						sb.append(currentPageNo * currentpageSize);
+						UserDefinedFormUtils.setPageInfo(page, currentPageNo, currentpageSize);
+					} else {
+						sb.append(rowCount);
+						UserDefinedFormUtils.setPageInfo(page, currentPageNo, rowCount);
+					}
+				} else {
+					throw new SQLException("Result set is invalid");
+				}
+
+				PreparedStatement preparedStatement = connection.prepareStatement(sb.toString());
 				ResultSet rs = preparedStatement.executeQuery();
-				return DataBaseAtapter.getResultSetPage(rs);
+
+				return UserDefinedFormUtils.getResultSetPage(rs, page, rowCount);
 			}
 		});
 
-		paramsMap.put("page", page);
+		this.page = workpage;
 		return ActionSupport.SUCCESS;
 	}
 
+	// 输入自定义报表地址后进行查询 暂时未使用
 	public String queryUserDefinedForm() throws Exception {
 		paramsMap = ParamsBuilder.buildMapFromHttpRequest();
 
@@ -202,30 +266,48 @@ public class GeneralconfigAction extends BaseAction {
 
 		paramsMap.put("selectKeys", selectKeys);
 
-		Page page = this.getService().doReturningWork(new ReturningWork<Page>() {
+		int pageNo = Constants.DEFAULT_PAGENO;
+		int pageSize = Constants.DEFAULT_PAGESIZE;
+
+		if (!(paramsMap.get("pageNo") == null || paramsMap.get("pageSize") == null)) {
+			pageNo = Integer.valueOf((String) paramsMap.get("pageNo"));
+			pageSize = Integer.valueOf((String) paramsMap.get("pageSize"));
+		}
+
+		final int currentPageNo = pageNo;
+		final int currentpageSize = pageSize;
+
+		// final String sqlForCount = "select count(*) as numberOfRecords from "
+		// + targetTable;
+
+		Page workpage = this.getService().doReturningWork(new ReturningWork<Page>() {
 			@Override
 			public Page execute(Connection connection) throws SQLException {
+				Page page = new Page();
 				PreparedStatement preparedStatement = connection.prepareStatement(realsql);
 				ResultSet rs = preparedStatement.executeQuery();
-				return DataBaseAtapter.getResultSetPage(rs);
+
+				UserDefinedFormUtils.setPageInfo(page, currentPageNo, currentpageSize);
+
+				return UserDefinedFormUtils.getResultSetPage(rs, page);
 			}
 		});
 
-		paramsMap.put("page", page);
-
+		// paramsMap.put("page", workpage);
+		this.page = workpage;
 		return ActionSupport.SUCCESS;
 	}
 
+	// 预览自定义报表，此方法暂未使用，前端实现
 	public void previewReportForm() {
 		paramsMap = ParamsBuilder.buildMapFromHttpRequest();
-		
+
 		String cfgt = (String) paramsMap.get("cfgtable");
 		// configMap = this.getConfigData(paramsMap);
 		try {
 			String p = URLDecoder.decode(cfgt, "UTF-8");
 			System.out.println(p);
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -267,6 +349,11 @@ public class GeneralconfigAction extends BaseAction {
 		// }
 	}
 
+	/**
+	 * 生成自定义报表时主方法,包含，增加，修改两种状态
+	 * 
+	 * @throws Exception
+	 */
 	public void generateReprotForm() throws Exception {
 		paramsMap = ParamsBuilder.buildMapFromHttpRequest();
 
@@ -344,9 +431,9 @@ public class GeneralconfigAction extends BaseAction {
 		String url = null;
 
 		if (isNew.equals("EDIT")) {
-			url = "system/generalconfig/queryUserDefinedForm.action" + "?code=" + configId;
+			url = "system/generalconfig/queryByKey.action" + "?code=" + configId;
 		} else if (isNew.equals("ADD")) {
-			url = "system/generalconfig/queryUserDefinedForm.action" + "?code=" + Long.toString(generalcfgid);
+			url = "system/generalconfig/queryByKey.action" + "?code=" + Long.toString(generalcfgid);
 		}
 
 		generalConfigVO.setUrl(url);
@@ -416,6 +503,12 @@ public class GeneralconfigAction extends BaseAction {
 		}
 	}
 
+	/**
+	 * 从paramsMap中抽取用户配置报表中的配置TABLE的数据,返回配置报表的map
+	 * 
+	 * @param paramsMap
+	 * @return configMap
+	 */
 	public Map<Integer, PreviewConfigVO> getConfigData(Map<String, Object> paramsMap) {
 
 		configMap = new HashMap<Integer, PreviewConfigVO>();
@@ -497,6 +590,7 @@ public class GeneralconfigAction extends BaseAction {
 		return configMap;
 	}
 
+	// 保存配置信息，此方法暂未使用
 	public void saveConfigInfo(Map<String, Object> paramsMap) {
 
 		configMap = new HashMap<Integer, PreviewConfigVO>();
@@ -506,7 +600,7 @@ public class GeneralconfigAction extends BaseAction {
 		for (Entry<String, Object> ele : paramsMap.entrySet()) {
 			// System.out.println(ele.getKey() + ele.getValue());
 			if (ele.getKey().equals("t[]")) {
-				targetTable = ele.getValue().toString();
+				// targetTable = ele.getValue().toString();
 				// System.out.println(ele.getKey());
 			} else {
 				String[] temp = preseConfigTb(ele.getKey());
@@ -556,7 +650,12 @@ public class GeneralconfigAction extends BaseAction {
 		}
 	}
 
-	// 返回d[cfgrows][15][fieldHidden] 中的 [15,fieldHidden]
+	/**
+	 * 此方法辅助解析配置TABLE中的内容 例如 : 返回d[cfgrows][15][fieldHidden] 中的 [15,fieldHidden]
+	 * 
+	 * @param content
+	 * @return
+	 */
 	public String[] preseConfigTb(String content) {
 
 		String[] splits = content.split("\\[");
@@ -573,6 +672,7 @@ public class GeneralconfigAction extends BaseAction {
 		return res;
 	}
 
+	// 原执行sql方法，暂未使用
 	public void executeSql() throws IOException {
 		Connection conn = null;
 
@@ -631,6 +731,32 @@ public class GeneralconfigAction extends BaseAction {
 	}
 
 	@Override
+	public String delete() {
+		try {
+			paramsMap = ParamsBuilder.buildMapFromHttpRequest();
+			String[] pkValues = this.getParamValueByParamsMap(paramsMap, "PK");
+			if (null != pkValues && pkValues.length > 0)
+				for (int index = 0; index < pkValues.length; index++) {
+					Serializable serVO = PkUtils.getPkVO(voClass, pkNameArray, pkValues[index]);
+					this.getService().doRemoveByPK(voClass, serVO, userVO);
+					// 配置表中对应此配置报表的的相关配置信息列表
+					List<?> list = this.getService().doFindByHQL(" from PreviewConfigVO where generalConfig_id = ? ",
+							new Object[] { serVO });
+					for (Object pcvo : list) {
+						this.getService().doRemoveByPK(PreviewConfigVO.class,
+								((PreviewConfigVO) pcvo).getGeneralConfigData_id(), userVO);
+					}
+				}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			this.addErrorMessage(ex.getMessage());
+			return ActionSupport.ERROR;
+		}
+		return ActionSupport.SUCCESS;
+	}
+
+	@Override
 	public String edit() {
 		try {
 			paramsMap = ParamsBuilder.buildMapFromHttpRequest();
@@ -662,6 +788,11 @@ public class GeneralconfigAction extends BaseAction {
 		return ActionSupport.SUCCESS;
 	}
 
+	/**
+	 * 用户输入sql语句后，开始解析此语句，抽取sql中的所有字段
+	 * 
+	 * @throws Exception
+	 */
 	public void checkFields() throws Exception {
 		paramsMap = ParamsBuilder.buildMapFromHttpRequest();
 
@@ -678,10 +809,6 @@ public class GeneralconfigAction extends BaseAction {
 		String currentTable = (String) paramsMap.get("currentTable");
 
 		List<FieldNameVO> list = new ArrayList<FieldNameVO>();
-		// String sql = "SELECT" + " `COLUMN_NAME`," + "`COLUMN_COMMENT`" + "
-		// FROM `INFORMATION_SCHEMA`.`COLUMNS` "
-		// + "WHERE `TABLE_SCHEMA`='usersdb' " + " AND `TABLE_NAME`" +
-		// "='rule_storage'";
 
 		String sql = "SELECT" + " `COLUMN_NAME`," + "`COLUMN_COMMENT`" + " FROM `INFORMATION_SCHEMA`.`COLUMNS` "
 				+ "WHERE `TABLE_SCHEMA`= '" + currentDb + "' AND `TABLE_NAME`" + "='" + currentTable + "'";
@@ -698,9 +825,6 @@ public class GeneralconfigAction extends BaseAction {
 			for (FieldNameVO fieldNameVO : list) {
 				fieldMap.put(fieldNameVO.getCOLUMN_NAME(), fieldNameVO.getCOLUMN_COMMENT());
 			}
-			// fieldList=this.getService().doQueryList(sql, FieldNameVO.class,
-			// null);
-			// paramsMap.put("fieldList", fieldList);
 
 			// get the column's name that user want to display.
 			String fieldsString = (String) paramsMap.get("fieldsArray");
@@ -718,16 +842,29 @@ public class GeneralconfigAction extends BaseAction {
 			} else {
 				js = JsonUtils.toJson(list);
 			}
-			this.sendJsonMessage(js);
+
+			if (js.equals(JsonUtils.EMPTY_JSON_ARRAY)) {
+				this.sendJsonMessage(JsonResult.create(ActionSupport.ERROR, "当前表不存在,或表格为空"));
+			} else {
+				this.sendJsonMessage(js);
+			}
+
 		} catch (SQLException ex) {
+			// this.addErrorMessage(ex.getMessage());
+			this.sendJsonMessage(JsonResult.create(ActionSupport.ERROR, ex.getMessage()));
 			ex.printStackTrace();
-			this.addErrorMessage(ex.getMessage());
 		} catch (IOException e) {
-			this.addErrorMessage(e.getMessage());
+			// this.addErrorMessage(e.getMessage());
+			this.sendJsonMessage(JsonResult.create(ActionSupport.ERROR, e.getMessage()));
 			e.printStackTrace();
 		}
 	}
 
+	/**
+	 * 通过用户的sql，生成表与表中字段的树状结构
+	 * 
+	 * @return
+	 */
 	public String tbtree() {
 
 		try {

@@ -78,10 +78,10 @@
 	</package>
 	
 	<package name="generalconfig" namespace="/system/generalconfig" extends="struts-default">
-		<action name="queryUserDefinedForm"  class="com.congxing.system.generalconfig.view.GeneralconfigAction" method="queryUserDefinedForm">
+		<!--  <action name="queryUserDefinedForm"  class="com.congxing.system.generalconfig.view.GeneralconfigAction" method="queryUserDefinedForm">
 			<result name="success">/system/generalconfig/resultpage.jsp</result>
 			<result name="error">/system/generalconfig/resultpage.jsp</result>
-		</action>
+		</action> -->
 		<action name="queryByKey"  class="com.congxing.system.generalconfig.view.GeneralconfigAction" method="queryByKey">
 			<result name="success">/system/generalconfig/resultpage.jsp</result>
 			<result name="error">/system/generalconfig/resultpage.jsp</result>

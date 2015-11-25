@@ -1,8 +1,13 @@
 package com.congxing.system.generalconfig.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class GeneralConfigVO {
+public class GeneralConfigVO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long generalconfigId;
 	private String formtitle;
 	private String formname;

@@ -1,6 +1,12 @@
 package com.congxing.system.generalconfig.model;
 
-public class FieldVO {
+import java.io.Serializable;
+
+public class FieldVO implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String fieldId;
 	private String fieldName;

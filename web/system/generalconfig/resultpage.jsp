@@ -80,13 +80,13 @@
 				<table class="list nowrap">
 					<thead>
 						<tr>
-							<c:forEach items="${paramsMap.page.datas[0]}" var="column">
+							<c:forEach items="${page.datas[0]}" var="column">
        						 <th><c:out value="${column.key}" /></th>
       						</c:forEach>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${paramsMap.page.datas}" var="columns">
+						<c:forEach items="${page.datas}" var="columns">
 	      					<tr>
 					       		 	<c:forEach items="${columns}" var="column">
 					          				<td><c:out value="${column.value}" /></td>
@@ -97,7 +97,7 @@
 				</table>
 			</div>
 			<div class="panelBar">
-				<cx:Page page="${page}" />
+				<cx:Page page="${page}"/>
 			</div>
 		</div>
 

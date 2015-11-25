@@ -1,9 +1,14 @@
 package com.congxing.system.generalconfig.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class PreviewConfigVO {
+public class PreviewConfigVO implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long generalConfigData_id;
 	private Long generalConfig_id;
 	private String tableName;

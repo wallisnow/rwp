@@ -9,6 +9,9 @@
 <%@ include file="/common/header.jsp"%>
 
 <script type="text/javascript">
+
+	cmdReturn="/system/generalconfig/list.action";
+
 	$(function() {
 		initPageEnv("content");
 		//alert('${paramsMap.keys}');
@@ -178,11 +181,16 @@
 				   function(result) {
 										$("#tableRename").val(targetTable);
 										var datas = result;
+										//console.log(result);
+										if(result.status === "error"){
+											alert(result.message);
+											return;
+										}
 										var $datas = $('#tmpl-tbody-tr').tmpl(datas);
 										$('#tbody').html($datas);
 										//如果数据源配置不正确
 										if ($("#tbody").children().length == 0) {
-											alert("解析出错, 请检查您的数据源配置是否正确, 或是否为单表查询sql语句, 错误内容: " + result.message);
+											alert("解析出错, 请检查您的数据源,sql,所查表表名配置等, 错误内容: " + result.message);
 											return;
 											}
 									});
@@ -321,7 +329,7 @@
 				window.location = url;
 				},
 			error : function(result) {
-				alert(JSON.stringify(result));
+				alert("添加失败，请检查您的配置，显示字段不能为空");
 			}
 		});
 	}
@@ -351,7 +359,7 @@
 			<div>
 				<div style="height: 10%">
 					当前所操作的表:
-					<s:textfield id="tableRename" type="text" value="%{paramsMap.formtitle}" />
+					<s:textfield id="tableRename" type="text" readonly="true" value="%{paramsMap.formtitle}" />
 					表名称:
 					<s:textfield id="tableName" type="text" value="%{paramsMap.formname}" />
 					<hr style="height: 1px; border: none; border-top: 1px dashed #0066CC;" />
@@ -431,7 +439,7 @@
 				</div>
 				 -->
 				</div>
-
+				<a href="javascript:void(0);" onclick="doReturn();return false;" class="linkbutton" data-options="iconCls:'icon-return'"><s:text name="return"/></a>
 			</div>
 	</form>
 
@@ -444,7 +452,7 @@
 				<td><span>{{= COLUMN_COMMENT}}</span></td>
 				<td><cx:select list="$TORF" name="status" cssClass="required  editControl" value="%{paramsMap.status}" emptyOption="true" headerKey="" headerValue="请选择"/></td>
 				<td><cx:select list="$TORF" name="status" cssClass="required  editControl" value="%{paramsMap.status}" emptyOption="true" headerKey="" headerValue="请选择"/></td>
-				<td><input type="text" name="columnRename"></td>
+				<td><s:textarea rows="1" name="columnRename"></s:textarea></td>
 			</tr>
 	</script>
 	
