@@ -90,6 +90,10 @@
 			<result name="success">/system/generalconfig/previewpage.jsp</result>
 			<result name="error">/system/generalconfig/previewpage.jsp</result>
 		</action>
+		<action name="generateTableFieldsTree"  class="com.congxing.system.generalconfig.view.GeneralconfigAction" method="generateTableFieldsTree">
+			<result name="success">/system/generalconfig/complexconfigtree.jsp</result>
+			<result name="error">/system/generalconfig/complexconfigtree.jsp</result>
+		</action>
 	</package>
 
 </struts>

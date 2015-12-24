@@ -4,6 +4,7 @@
 <link href="${ctx}/css/dwzcss/style.css" rel="stylesheet" type="text/css" media="screen"/>
 <link href="${ctx}/css/dwzcss/core.css" rel="stylesheet" type="text/css" media="screen"/>
 <link href="${ctx}/css/dwzcss/print.css" rel="stylesheet" type="text/css" media="print"/>
+<link href="${ctx}/css/generalconfig.css" rel="stylesheet" type="text/css"/>
 
 <link href="${ctx}/plugin/linkbutton/css/linkbutton.css" rel="stylesheet" type="text/css"/>
 <link href="${ctx}/plugin/linkbutton/css/icon.css" rel="stylesheet" type="text/css"/>

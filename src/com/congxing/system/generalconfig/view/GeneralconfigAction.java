@@ -18,7 +18,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.axis.utils.BeanUtils;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.mrbean.BeanUtil;
 import org.hibernate.cfg.annotations.ResultsetMappingSecondPass;
 import org.hibernate.jdbc.ReturningWork;
 
@@ -39,6 +43,7 @@ import com.congxing.system.generalconfig.model.FieldNameVO;
 import com.congxing.system.generalconfig.model.FieldVO;
 import com.congxing.system.generalconfig.model.GeneralConfigVO;
 import com.congxing.system.generalconfig.model.PreviewConfigVO;
+import com.congxing.system.generalconfig.model.TableFieldVO;
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
@@ -926,6 +931,77 @@ public class GeneralconfigAction extends BaseAction {
 		}
 		return ActionSupport.SUCCESS;
 
+	}
+
+	public String generateTableFieldsTree() throws SQLException {
+		paramsMap = ParamsBuilder.buildMapFromHttpRequest();
+		List<String> list = new ArrayList<String>();
+		try {
+			String sql = "SELECT `TABLE_NAME`, `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE table_schema='usersdb'";
+			List<Map<String, Object>> maps = this.getService().doQuery(sql, new MapListHandler(), null);
+			// List<Map<String, List<String>>> data = new ArrayList<Map<String,
+			// List<String>>>();
+			List<String> tempList = new ArrayList<String>();
+			List<FieldVO> listFieldsOfTb = new ArrayList<FieldVO>();
+
+			int pid = 0;
+
+			// FieldVO root = new FieldVO("0", "0", "tableName", null);
+			// listFieldsOfTb.add(root);
+
+			for (int i = 0; i < maps.size(); i++) {
+				for (Entry<String, Object> map : maps.get(i).entrySet()) {
+					// TableFieldVO tableFieldVO = new
+					// TableFieldVO(i+"",map.getKey(),map.getValue(),);
+					if (map.getKey().equals("TABLE_NAME")) {
+						if (tempList.contains(map.getValue().toString())) {
+							// System.out.println(map.getValue().toString());
+							// FieldVO fieldVO = new FieldVO(i+"", i+"",
+							// map.get, pFieldId)
+						} else {
+							tempList.add(map.getValue().toString());
+
+							if (i == 0) {
+								pid = i;
+							} else {
+								pid = i++;
+							}
+
+							FieldVO rootTable = new FieldVO(i + "", i + "", map.getValue().toString(), null);
+							listFieldsOfTb.add(rootTable);
+							// System.out.println(" OK
+							// "+map.getValue().toString());
+						}
+					} else {
+						FieldVO nodeField = null;
+
+						if (pid != 0) {
+							nodeField = new FieldVO((i + 1) + "", (i + 1) + "", map.getValue().toString(),
+									(pid + 1) + "");
+						} else {
+							nodeField = new FieldVO((i + 1) + "", (i + 1) + "", map.getValue().toString(), pid + "");
+						}
+
+						listFieldsOfTb.add(nodeField);
+					}
+
+				}
+			}
+
+			// for (FieldVO fieldVO : listFieldsOfTb) {
+			// System.out
+			// .println(fieldVO.getFieldId() + " : " + fieldVO.getFieldName() +
+			// " : " + fieldVO.getpFieldId());
+			// }
+
+			StringBuffer treeXML = TreeBuilder.buildTreeXML(listFieldsOfTb, "fieldId", "fieldName", "pFieldId", null,
+					null);
+
+			paramsMap.put("treeXML", treeXML.toString());
+		} catch (Exception e) {
+			return ActionSupport.ERROR;
+		}
+		return ActionSupport.SUCCESS;
 	}
 
 	public List<FieldNameVO> getFieldList() {
